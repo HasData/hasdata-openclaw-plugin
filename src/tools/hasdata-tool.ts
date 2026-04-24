@@ -75,10 +75,6 @@ export function buildToolParameters() {
 }
 
 export function createHasDataTool(config: HasDataToolConfig) {
-  // The tool never reads process.env directly. The caller is responsible for
-  // resolving the API key — see src/index.ts's register() which reads it once
-  // at plugin load from the openclaw config (falling back to the
-  // HASDATA_API_KEY env var) and hands it in via `config.apiKey`.
   const apiKey = config.apiKey ?? "";
   const parameters = buildToolParameters();
 
