@@ -77,6 +77,8 @@ jobs:
           fi
           npx -y clawhub login --token "$CLAWHUB_TOKEN" --no-browser
           npx -y clawhub package publish . \
+            --name hasdata-openclaw-plugin \
+            --display-name "HasData" \
             --source-repo "${GITHUB_REPOSITORY}" \
             --source-ref  "${GITHUB_REF_NAME}" \
             --source-commit "${GITHUB_SHA}"
