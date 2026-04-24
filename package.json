@@ -1,6 +1,6 @@
 {
   "name": "@hasdata/hasdata-openclaw-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "HasData plugin for OpenClaw — Google SERP, Google Maps, Amazon, Zillow, Redfin, Airbnb, Yelp, Indeed, and arbitrary web scraping via api.hasdata.com. Requires a HasData API key (HASDATA_API_KEY env var or plugins.entries.hasdata.config.apiKey).",
   "type": "module",
   "license": "MIT",

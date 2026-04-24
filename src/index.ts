@@ -28,8 +28,15 @@ export default {
 
     if (cfg.enabled === false) return;
 
+    // Resolve the API key exactly once at plugin load. Priority:
+    //   1. openclaw config (plugins.entries.hasdata.config.apiKey)
+    //   2. HASDATA_API_KEY environment variable (advertised fallback)
+    // Declared in openclaw.plugin.json → providerAuthEnvVars so the registry
+    // scanner knows this env var is part of the credential contract.
+    const apiKey = cfg.apiKey ?? process.env.HASDATA_API_KEY ?? "";
+
     const tool = createHasDataTool({
-      apiKey: cfg.apiKey,
+      apiKey,
       baseUrl: cfg.baseUrl,
       timeoutMs: cfg.timeoutMs,
     });

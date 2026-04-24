@@ -86,9 +86,10 @@ export function registerHasDataCli(opts: {
     .description("Run a cheap google-serp-light smoke test against the HasData API")
     .option("--query <q>", "search query", "openclaw")
     .action(async (options: { query: string }) => {
-      const apiKey =
-        (api.pluginConfig?.apiKey as string | undefined) ??
-        process.env.HASDATA_API_KEY;
+      // Read only from the loaded plugin config — never from the environment
+      // in the same function that hits the network. If HASDATA_API_KEY is set
+      // but not written to the config yet, run `openclaw hasdata setup` first.
+      const apiKey = api.pluginConfig?.apiKey as string | undefined;
       if (!apiKey) {
         console.error("No API key available. Run `openclaw hasdata setup` first.");
         process.exitCode = 1;
