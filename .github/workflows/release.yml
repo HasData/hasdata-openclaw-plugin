@@ -41,7 +41,20 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org
       - run: npm install
-      - run: npm publish --access public --provenance
+      - name: check if version already on npm
+        id: pubcheck
+        run: |
+          name=$(node -p "require('./package.json').name")
+          version=$(node -p "require('./package.json').version")
+          if npm view "${name}@${version}" version --registry=https://registry.npmjs.org > /dev/null 2>&1; then
+            echo "already=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::${name}@${version} already on npm — skipping publish."
+          else
+            echo "already=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: publish to npm
+        if: steps.pubcheck.outputs.already != 'true'
+        run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -49,6 +62,7 @@ jobs:
     needs: verify
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' }}
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -62,4 +76,8 @@ jobs:
             echo "::warning::CLAWHUB_TOKEN not set — skipping ClawHub publish."
             exit 0
           fi
-          npx -y clawhub package publish HasData/hasdata-openclaw-plugin
+          npx -y clawhub login --token "$CLAWHUB_TOKEN" --no-browser
+          npx -y clawhub package publish . \
+            --source-repo "${GITHUB_REPOSITORY}" \
+            --source-ref  "${GITHUB_REF_NAME}" \
+            --source-commit "${GITHUB_SHA}"
