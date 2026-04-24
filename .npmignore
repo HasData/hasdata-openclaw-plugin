@@ -1,0 +1,8 @@
+test/
+.github/
+vitest.config.ts
+tsconfig.json
+.gitignore
+node_modules/
+coverage/
+.idea/

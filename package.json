@@ -1,0 +1,74 @@
+{
+  "name": "@hasdata/hasdata-openclaw-plugin",
+  "version": "0.1.0",
+  "description": "HasData plugin for OpenClaw — Google SERP, Google Maps, Amazon, Zillow, Redfin, Airbnb, Yelp, Indeed, and arbitrary web scraping via api.hasdata.com.",
+  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "HasData",
+    "email": "support@hasdata.com",
+    "url": "https://hasdata.com"
+  },
+  "homepage": "https://github.com/HasData/hasdata-openclaw-plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HasData/hasdata-openclaw-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HasData/hasdata-openclaw-plugin/issues"
+  },
+  "keywords": [
+    "openclaw",
+    "openclaw-plugin",
+    "hasdata",
+    "scraping",
+    "serp",
+    "google",
+    "amazon",
+    "zillow"
+  ],
+  "files": [
+    "src",
+    "skills",
+    "openclaw.plugin.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "generate": "node scripts/generate-endpoints.mjs",
+    "try": "tsx scripts/try.ts"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.33.0"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.3.24-beta.2"
+  },
+  "peerDependenciesMeta": {
+    "openclaw": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  },
+  "openclaw": {
+    "id": "hasdata",
+    "extensions": ["./src/index.ts"],
+    "compat": {
+      "pluginApi": ">=2026.3.24-beta.2",
+      "minGatewayVersion": "2026.3.24-beta.2"
+    },
+    "build": {
+      "openclawVersion": "2026.3.24-beta.2",
+      "pluginSdkVersion": "2026.3.24-beta.2"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

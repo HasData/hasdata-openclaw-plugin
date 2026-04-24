@@ -1,0 +1,82 @@
+name: regen
+
+on:
+  schedule:
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [spec-changed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  regen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm install
+
+      - name: regenerate
+        run: npm run generate
+
+      - name: typecheck + test
+        run: |
+          npm run typecheck
+          npm test
+
+      - name: check for diff
+        id: diff
+        run: |
+          if git diff --quiet -- src/endpoints.generated.ts; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: summarize diff
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          {
+            echo "## Changes"
+            echo
+            git diff --stat -- src/endpoints.generated.ts
+            echo
+            echo "## Endpoint delta"
+            echo
+            added=$(git diff -- src/endpoints.generated.ts | grep -E '^\+ +"slug": "' | sed -E 's/.*"slug": "([^"]+)".*/\1/' | sort -u)
+            removed=$(git diff -- src/endpoints.generated.ts | grep -E '^\- +"slug": "' | sed -E 's/.*"slug": "([^"]+)".*/\1/' | sort -u)
+            net_added=$(comm -23 <(echo "$added") <(echo "$removed"))
+            net_removed=$(comm -13 <(echo "$added") <(echo "$removed"))
+            if [ -n "$net_added" ]; then
+              echo "### Added"
+              echo "$net_added" | sed 's/^/- /'
+              echo
+            fi
+            if [ -n "$net_removed" ]; then
+              echo "### Removed"
+              echo "$net_removed" | sed 's/^/- /'
+              echo
+            fi
+            if [ -z "$net_added" ] && [ -z "$net_removed" ]; then
+              echo "_No endpoints added or removed — parameter/schema changes only._"
+            fi
+          } > pr-body.md
+
+      - name: open pr
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore(gen): refresh HasData API schema"
+          branch: chore/gen-refresh
+          delete-branch: true
+          title: "chore(gen): refresh HasData API schema"
+          body-path: pr-body.md
+          labels: |
+            automated
+            generated

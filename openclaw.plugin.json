@@ -1,0 +1,45 @@
+{
+  "id": "hasdata",
+  "name": "HasData",
+  "description": "Real-time web data via HasData — Google SERP, Google Maps, Amazon, Zillow, Redfin, Airbnb, Yelp, Indeed, Bing, and arbitrary URL scraping (HTML / markdown / AI-extracted JSON).",
+  "version": "0.1.0",
+  "contracts": {
+    "tools": ["hasdata"]
+  },
+  "skills": ["./skills/hasdata"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "enabled": {
+        "type": "boolean",
+        "description": "Enable the HasData plugin (default: true when apiKey is set)."
+      },
+      "apiKey": {
+        "type": "string",
+        "description": "HasData API key (defaults to HASDATA_API_KEY env var). Get one at https://hasdata.com."
+      },
+      "baseUrl": {
+        "type": "string",
+        "description": "HasData API base URL (default: https://api.hasdata.com)."
+      },
+      "timeoutMs": {
+        "type": "number",
+        "minimum": 1000,
+        "maximum": 600000,
+        "description": "Per-request timeout in milliseconds (default: 120000)."
+      }
+    }
+  },
+  "uiHints": {
+    "enabled": { "label": "Enable HasData plugin" },
+    "apiKey": {
+      "label": "HasData API Key",
+      "sensitive": true,
+      "placeholder": "hd_...",
+      "help": "Create one at https://hasdata.com."
+    },
+    "baseUrl": { "label": "API base URL", "advanced": true },
+    "timeoutMs": { "label": "Request timeout (ms)", "advanced": true }
+  }
+}
