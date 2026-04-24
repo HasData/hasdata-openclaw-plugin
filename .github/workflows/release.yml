@@ -75,14 +75,8 @@ jobs:
             echo "::warning::CLAWHUB_TOKEN not set — skipping ClawHub publish."
             exit 0
           fi
-          # ClawHub rejects --name overrides that don't match package.json.name.
-          # Rewrite package.json.name to the unscoped form for the ClawHub
-          # tarball only — this runner is ephemeral, the change never reaches
-          # the npm publish job (separate checkout) or the git repo.
-          node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));p.name='hasdata-openclaw-plugin';fs.writeFileSync('package.json',JSON.stringify(p,null,2));"
           npx -y clawhub login --token "$CLAWHUB_TOKEN" --no-browser
           npx -y clawhub package publish . \
-            --display-name "HasData" \
             --source-repo "${GITHUB_REPOSITORY}" \
             --source-ref  "${GITHUB_REF_NAME}" \
             --source-commit "${GITHUB_SHA}"
