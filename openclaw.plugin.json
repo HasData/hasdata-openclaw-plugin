@@ -2,7 +2,7 @@
   "id": "hasdata",
   "name": "HasData",
   "description": "Real-time web data via HasData — Google SERP, Google Maps, Amazon, Zillow, Redfin, Airbnb, Yelp, Indeed, Bing, and arbitrary URL scraping (HTML / markdown / AI-extracted JSON). Requires a HasData API key (HASDATA_API_KEY env var or `plugins.entries.hasdata.config.apiKey` — get one free at https://hasdata.com). Outbound network is limited to https://api.hasdata.com by default.",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "contracts": {
     "tools": ["hasdata"]
   },

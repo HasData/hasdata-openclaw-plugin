@@ -31,26 +31,32 @@ describe("hasdata tool", () => {
     expect(tool.parameters).toBeDefined();
   });
 
-  it("exposes every endpoint as a discriminated-union branch", () => {
+  it("uses a flat object schema (no top-level anyOf) to avoid tool-use union flattening", () => {
     const tool = createHasDataTool({ apiKey: "test" });
-    const branches = (tool.parameters as any).anyOf as Array<{
-      properties: { action: { const: string } };
-    }>;
-    const actionValues = branches.map((b) => b.properties.action.const);
+    const schema = tool.parameters as any;
+    expect(schema.type).toBe("object");
+    expect(schema.anyOf).toBeUndefined();
+    expect(schema.oneOf).toBeUndefined();
+    expect(schema.properties.action).toBeDefined();
+    expect(schema.properties.params).toBeDefined();
+  });
+
+  it("exposes every endpoint as a literal in the action union", () => {
+    const tool = createHasDataTool({ apiKey: "test" });
+    const actionSchema = (tool.parameters as any).properties.action;
+    const values = actionSchema.anyOf.map((b: any) => b.const);
     for (const slug of ENDPOINT_SLUGS) {
-      expect(actionValues).toContain(slug);
+      expect(values).toContain(slug);
     }
   });
 
-  it("each branch carries a per-action params schema with proper required fields", () => {
+  it("lists per-action required fields in the tool description", () => {
     const tool = createHasDataTool({ apiKey: "test" });
-    const branches = (tool.parameters as any).anyOf as Array<any>;
-    const serpBranch = branches.find(
-      (b) => b.properties.action.const === "google-serp",
-    );
-    expect(serpBranch).toBeDefined();
-    expect(serpBranch.properties.params.type).toBe("object");
-    expect(serpBranch.properties.params.properties).toHaveProperty("q");
+    expect(tool.description).toContain("airbnb-listing");
+    expect(tool.description).toContain("location");
+    expect(tool.description).toContain("checkIn");
+    expect(tool.description).toContain("amazon-product");
+    expect(tool.description).toContain("asin");
   });
 
   it("calls the correct GET URL with x-api-key header", async () => {
