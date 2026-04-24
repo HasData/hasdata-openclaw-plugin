@@ -53,7 +53,10 @@ export class HasDataClient {
     this.timeoutMs = cfg.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.fetchFn = cfg.fetch ?? globalThis.fetch;
     this.userAgent = cfg.userAgent ?? "hasdata-openclaw-plugin";
-    this.debug = cfg.debug ?? process.env.HASDATA_DEBUG === "1";
+    // Debug logging is opt-in via config only. No env-var backdoor, so
+    // this plugin cannot be silently switched to stderr-log request bodies
+    // by setting an environment variable at the agent host.
+    this.debug = cfg.debug === true;
   }
 
   buildRequest(

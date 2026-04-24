@@ -3,13 +3,13 @@
  * Local runner for the hasdata tool — no OpenClaw needed.
  *
  * Usage:
- *   npm run try -- <action> '<paramsJson>' [--dry-run] [--raw]
+ *   npm run try -- <action> '<paramsJson>' [--dry-run] [--raw] [--debug]
  *   npm run try -- list
  *
  * Examples:
  *   HASDATA_API_KEY=hd_xxx npm run try -- google-serp '{"q":"coffee","num":5}'
  *   HASDATA_API_KEY=hd_xxx npm run try -- --dry-run google-serp '{"q":"coffee"}'
- *   HASDATA_DEBUG=1 HASDATA_API_KEY=hd_xxx npm run try -- amazon-product '{"asin":"B08N5WRWNW"}'
+ *   HASDATA_API_KEY=hd_xxx npm run try -- --debug amazon-product '{"asin":"B08N5WRWNW"}'
  *   npm run try -- list
  */
 import { createHasDataTool } from "../src/tools/hasdata-tool.js";
@@ -26,14 +26,16 @@ interface Args {
   dryRun: boolean;
   raw: boolean;
   list: boolean;
+  debug: boolean;
 }
 
 function parseArgs(argv: string[]): Args {
-  const out: Args = { dryRun: false, raw: false, list: false };
+  const out: Args = { dryRun: false, raw: false, list: false, debug: false };
   const positional: string[] = [];
   for (const a of argv) {
     if (a === "--dry-run") out.dryRun = true;
     else if (a === "--raw") out.raw = true;
+    else if (a === "--debug") out.debug = true;
     else if (a === "list" || a === "--list") out.list = true;
     else positional.push(a);
   }
@@ -112,8 +114,8 @@ async function main() {
   }
 
   // Live path — go through the tool so we exercise the same code the
-  // OpenClaw runtime would. Toggle debug logs with HASDATA_DEBUG=1.
-  const tool = createHasDataTool({ apiKey });
+  // OpenClaw runtime would. `--debug` turns on stderr request/response logs.
+  const tool = createHasDataTool({ apiKey, debug: args.debug });
   const result = (await tool.execute("try", { action: slug, params })) as {
     isError?: boolean;
     content: { type: string; text: string }[];

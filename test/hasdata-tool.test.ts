@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { createHasDataTool } from "../src/tools/hasdata-tool.js";
 import { ENDPOINT_SLUGS } from "../src/endpoints.generated.js";
 
@@ -20,6 +20,10 @@ function mockFetch(response: {
 }
 
 describe("hasdata tool", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   it("registers under the name 'hasdata' with the expected shape", () => {
     const tool = createHasDataTool({ apiKey: "test" });
     expect(tool.name).toBe("hasdata");
@@ -130,9 +134,11 @@ describe("hasdata tool", () => {
   });
 
   it("returns isError when API key is missing", async () => {
-    const tool = createHasDataTool({ apiKey: "" });
-    delete process.env.HASDATA_API_KEY;
+    // Sandbox the env — vitest restores on afterEach so we don't mutate the
+    // runner's real process.env.
+    vi.stubEnv("HASDATA_API_KEY", "");
 
+    const tool = createHasDataTool({ apiKey: "" });
     const result = await tool.execute("1", {
       action: "google-serp",
       params: { q: "x" },

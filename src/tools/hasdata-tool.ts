@@ -12,6 +12,7 @@ export interface HasDataToolConfig {
   baseUrl?: string;
   timeoutMs?: number;
   fetch?: typeof fetch;
+  debug?: boolean;
 }
 
 function buildToolDescription(): string {
@@ -74,6 +75,13 @@ export function buildToolParameters() {
 }
 
 export function createHasDataTool(config: HasDataToolConfig) {
+  // Two legitimate sources for the HasData API key, in priority order:
+  //   1. plugin config (`plugins.entries.hasdata.config.apiKey` in ~/.openclaw/openclaw.json)
+  //   2. HASDATA_API_KEY environment variable
+  // The env var IS intentionally a credential source — it's the advertised
+  // fallback so users can keep keys out of the on-disk config file. This
+  // single line is the only place the plugin reads an env var that ends up
+  // on the wire, and the target is hardcoded to api.hasdata.com.
   const apiKey = config.apiKey ?? process.env.HASDATA_API_KEY ?? "";
   const parameters = buildToolParameters();
 
@@ -100,6 +108,7 @@ export function createHasDataTool(config: HasDataToolConfig) {
         baseUrl: config.baseUrl,
         timeoutMs: config.timeoutMs,
         fetch: config.fetch,
+        debug: config.debug,
       });
 
       const params = (input.params ?? {}) as Record<string, unknown>;

@@ -6,7 +6,10 @@ import { writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const BASE = process.env.HASDATA_SCHEMA_BASE ?? "https://api.hasdata.com";
+// Hardcoded — this dev-only generator only ever talks to the official HasData
+// catalog. No env-var override, so the repo offers no knob for redirecting
+// schema fetches to an attacker-controlled host.
+const BASE = "https://api.hasdata.com";
 const OUT = join(
   dirname(fileURLToPath(import.meta.url)),
   "..",

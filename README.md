@@ -365,7 +365,7 @@ npm run try -- google-serp '{"q":"openclaw"}'         # pretty-print, truncated
 npm run try -- --raw google-serp '{"q":"openclaw"}'   # full JSON to stdout (pipe to jq)
 
 # Verbose: see the outgoing URL + request headers + response timing
-HASDATA_DEBUG=1 npm run try -- amazon-product '{"asin":"B08N5WRWNW"}'
+npm run try -- --debug amazon-product '{"asin":"B08N5WRWNW"}'
 ```
 
 The runner goes through `createHasDataTool` + `HasDataClient.execute`, exercising the same code path the OpenClaw runtime uses — so if it works here, it'll work in the Gateway.

@@ -1,8 +1,8 @@
 {
   "id": "hasdata",
   "name": "HasData",
-  "description": "Real-time web data via HasData — Google SERP, Google Maps, Amazon, Zillow, Redfin, Airbnb, Yelp, Indeed, Bing, and arbitrary URL scraping (HTML / markdown / AI-extracted JSON).",
-  "version": "0.1.0",
+  "description": "Real-time web data via HasData — Google SERP, Google Maps, Amazon, Zillow, Redfin, Airbnb, Yelp, Indeed, Bing, and arbitrary URL scraping (HTML / markdown / AI-extracted JSON). Requires a HasData API key (HASDATA_API_KEY env var or `plugins.entries.hasdata.config.apiKey` — get one free at https://hasdata.com). Outbound network is limited to https://api.hasdata.com by default.",
+  "version": "0.1.1",
   "contracts": {
     "tools": ["hasdata"]
   },
@@ -17,7 +17,7 @@
       },
       "apiKey": {
         "type": "string",
-        "description": "HasData API key (defaults to HASDATA_API_KEY env var). Get one at https://hasdata.com."
+        "description": "HasData API key. Required — set this field or the HASDATA_API_KEY environment variable (get one free at https://hasdata.com). Stored plaintext in ~/.openclaw/openclaw.json; chmod 600 that file if you store credentials there."
       },
       "baseUrl": {
         "type": "string",

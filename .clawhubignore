@@ -1,0 +1,33 @@
+# Files to exclude from the ClawHub tarball.
+# `clawhub package publish` reads THIS file only (it does not fall back to
+# .gitignore), so everything you don't want shipped must be listed here.
+# Gitignore syntax.
+
+# Installed dependencies — fetched by the host, never shipped.
+node_modules/
+
+# Dev tooling — not needed at plugin runtime.
+test/
+scripts/
+.github/
+.idea/
+.vscode/
+vitest.config.ts
+tsconfig.json
+.npmignore
+.clawhubignore
+.gitignore
+
+# Environment / secrets
+.env
+.env.local
+
+# Build output / lockfiles
+dist/
+coverage/
+package-lock.json
+
+# Misc noise
+.DS_Store
+*.log
+*.swp
