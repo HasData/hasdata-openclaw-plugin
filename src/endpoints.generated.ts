@@ -13942,6 +13942,652 @@ export const ENDPOINTS = {
           "sold"
         ]
       },
+      "sort": {
+        "type": "string",
+        "description": "The sorting option for the search results.",
+        "wireName": "sort",
+        "enum": [
+          "recommended",
+          "newest",
+          "oldest",
+          "priceLowToHigh",
+          "priceHighToLow",
+          "minSquareFeet",
+          "maxSquareFeet",
+          "bedrooms",
+          "bathrooms",
+          "lotSize",
+          "squareFeetPrice",
+          "mostRecentlySold"
+        ]
+      },
+      "priceMin": {
+        "type": "number",
+        "description": "The minimum price of the listing.",
+        "wireName": "price[min]"
+      },
+      "priceMax": {
+        "type": "number",
+        "description": "The maximum price of the listing.",
+        "wireName": "price[max]"
+      },
+      "monthlyPaymentMin": {
+        "type": "number",
+        "description": "The minimum monthly payment.",
+        "wireName": "monthlyPayment[min]"
+      },
+      "monthlyPaymentMax": {
+        "type": "number",
+        "description": "The maximum monthly payment.",
+        "wireName": "monthlyPayment[max]"
+      },
+      "monthlyPaymentInterestRate": {
+        "type": "number",
+        "description": "The mortgage interest rate (percent) used to calculate the monthly payment.",
+        "wireName": "monthlyPayment[interestRate]"
+      },
+      "monthlyPaymentInsuranceRate": {
+        "type": "number",
+        "description": "The home insurance rate (percent) used to calculate the monthly payment.",
+        "wireName": "monthlyPayment[insuranceRate]"
+      },
+      "monthlyPaymentDownPaymentPercent": {
+        "type": "number",
+        "description": "The down payment as a percentage of the home price.",
+        "wireName": "monthlyPayment[downPaymentPercent]"
+      },
+      "monthlyPaymentDownPaymentAmount": {
+        "type": "number",
+        "description": "The down payment as an absolute amount.",
+        "wireName": "monthlyPayment[downPaymentAmount]"
+      },
+      "monthlyPaymentMortgageTerm": {
+        "type": "string",
+        "description": "The mortgage term used to calculate the monthly payment.",
+        "wireName": "monthlyPayment[mortgageTerm]",
+        "enum": [
+          "fixed15Years",
+          "fixed20Years",
+          "fixed30Years",
+          "fixed30YearsFha",
+          "fixed30YearsVa",
+          "fixed30YearsJumbo"
+        ]
+      },
+      "costHoa": {
+        "type": "number",
+        "description": "The maximum monthly Homeowners Association (HOA) fee.",
+        "wireName": "cost[hoa]"
+      },
+      "cost[pricePerSqft][min]": {
+        "type": "string",
+        "description": "The minimum price per square foot.",
+        "wireName": "cost[pricePerSqft][min]",
+        "enum": [
+          "50",
+          "100",
+          "150",
+          "200",
+          "250",
+          "300",
+          "400",
+          "500",
+          "600",
+          "800",
+          "1000",
+          "1400",
+          "1800",
+          "2200",
+          "2600",
+          "3000"
+        ]
+      },
+      "cost[pricePerSqft][max]": {
+        "type": "string",
+        "description": "The maximum price per square foot.",
+        "wireName": "cost[pricePerSqft][max]",
+        "enum": [
+          "50",
+          "100",
+          "150",
+          "200",
+          "250",
+          "300",
+          "400",
+          "500",
+          "600",
+          "800",
+          "1000",
+          "1400",
+          "1800",
+          "2200",
+          "2600",
+          "3000"
+        ]
+      },
+      "costExcludeLandLeases": {
+        "type": "boolean",
+        "description": "If set to true, listings with land leases will be excluded.",
+        "wireName": "cost[excludeLandLeases]"
+      },
+      "costMaxPropertyTaxPerYear": {
+        "type": "number",
+        "description": "The maximum property tax per year.",
+        "wireName": "cost[maxPropertyTaxPerYear]"
+      },
+      "costAcceptedFinancing": {
+        "type": "string",
+        "description": "The accepted financing type.",
+        "wireName": "cost[acceptedFinancing]",
+        "enum": [
+          "FHA",
+          "VA"
+        ]
+      },
+      "costPriceReduced": {
+        "type": "string",
+        "description": "Filter listings by when the price was reduced.",
+        "wireName": "cost[priceReduced]",
+        "enum": [
+          "inTheLastDay",
+          "inTheLast3Days",
+          "inTheLast7Days",
+          "inTheLast14Days",
+          "inTheLast30Days",
+          "moreThan30Days",
+          "moreThan60Days",
+          "moreThan120Days"
+        ]
+      },
+      "homeTypes": {
+        "type": "array",
+        "description": "An array of home types to filter the listings. Allowed values depend on the listing `type`.",
+        "wireName": "homeTypes[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "house",
+            "townhouse",
+            "townhome",
+            "condo",
+            "land",
+            "multiFamily",
+            "mobile",
+            "coOp",
+            "other",
+            "apartment"
+          ]
+        }
+      },
+      "bedsMin": {
+        "type": "number",
+        "description": "The minimum number of bedrooms.",
+        "wireName": "beds[min]"
+      },
+      "bedsMax": {
+        "type": "number",
+        "description": "The maximum number of bedrooms.",
+        "wireName": "beds[max]"
+      },
+      "baths": {
+        "type": "string",
+        "description": "The minimum number of bathrooms.",
+        "wireName": "baths",
+        "enum": [
+          "one",
+          "oneAndHalf",
+          "two",
+          "twoAndHalf",
+          "three",
+          "four"
+        ]
+      },
+      "forSaleSquareFeetMin": {
+        "type": "string",
+        "description": "The minimum square footage for for-sale listings.",
+        "wireName": "forSaleSquareFeet[min]",
+        "enum": [
+          "750",
+          "1000",
+          "1100",
+          "1200",
+          "1300",
+          "1400",
+          "1500",
+          "1600",
+          "1700",
+          "1800",
+          "1900",
+          "2000",
+          "2250",
+          "2500",
+          "2750",
+          "3000",
+          "4000",
+          "5000",
+          "7500",
+          "10000"
+        ]
+      },
+      "forSaleSquareFeetMax": {
+        "type": "string",
+        "description": "The maximum square footage for for-sale listings.",
+        "wireName": "forSaleSquareFeet[max]",
+        "enum": [
+          "750",
+          "1000",
+          "1100",
+          "1200",
+          "1300",
+          "1400",
+          "1500",
+          "1600",
+          "1700",
+          "1800",
+          "1900",
+          "2000",
+          "2250",
+          "2500",
+          "2750",
+          "3000",
+          "4000",
+          "5000",
+          "7500",
+          "10000"
+        ]
+      },
+      "forRentSquareFootageMin": {
+        "type": "number",
+        "description": "The minimum square footage for for-rent listings.",
+        "wireName": "forRentSquareFootage[min]"
+      },
+      "forRentSquareFootageMax": {
+        "type": "number",
+        "description": "The maximum square footage for for-rent listings.",
+        "wireName": "forRentSquareFootage[max]"
+      },
+      "lotSizeMin": {
+        "type": "string",
+        "description": "The minimum lot size.",
+        "wireName": "lotSize[min]",
+        "enum": [
+          "2000 sqft",
+          "4500 sqft",
+          "6500 sqft",
+          "8000 sqft",
+          "9500 sqft",
+          "0.25 acres",
+          "0.5 acres",
+          "1 acres",
+          "2 acres",
+          "3 acres",
+          "4 acres",
+          "5 acres",
+          "10 acres",
+          "20 acres",
+          "40 acres",
+          "100 acres"
+        ]
+      },
+      "lotSizeMax": {
+        "type": "string",
+        "description": "The maximum lot size.",
+        "wireName": "lotSize[max]",
+        "enum": [
+          "2000 sqft",
+          "4500 sqft",
+          "6500 sqft",
+          "8000 sqft",
+          "9500 sqft",
+          "0.25 acres",
+          "0.5 acres",
+          "1 acres",
+          "2 acres",
+          "3 acres",
+          "4 acres",
+          "5 acres",
+          "10 acres",
+          "20 acres",
+          "40 acres",
+          "100 acres"
+        ]
+      },
+      "yearBuiltMin": {
+        "type": "string",
+        "description": "The minimum year the property was built.",
+        "wireName": "yearBuilt[min]",
+        "enum": [
+          "2026",
+          "2025",
+          "2024",
+          "2023",
+          "2022",
+          "2021",
+          "2020",
+          "2019",
+          "2018",
+          "2017",
+          "2016",
+          "2015",
+          "2010",
+          "2005",
+          "2000",
+          "1990",
+          "1980",
+          "1970",
+          "1960",
+          "1950",
+          "1940",
+          "1920",
+          "1900"
+        ]
+      },
+      "yearBuiltMax": {
+        "type": "string",
+        "description": "The maximum year the property was built.",
+        "wireName": "yearBuilt[max]",
+        "enum": [
+          "2026",
+          "2025",
+          "2024",
+          "2023",
+          "2022",
+          "2021",
+          "2020",
+          "2019",
+          "2018",
+          "2017",
+          "2016",
+          "2015",
+          "2010",
+          "2005",
+          "2000",
+          "1990",
+          "1980",
+          "1970",
+          "1960",
+          "1950",
+          "1940",
+          "1920",
+          "1900"
+        ]
+      },
+      "storiesMin": {
+        "type": "string",
+        "description": "The minimum number of stories.",
+        "wireName": "stories[min]",
+        "enum": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "10",
+          "15",
+          "20"
+        ]
+      },
+      "storiesMax": {
+        "type": "string",
+        "description": "The maximum number of stories.",
+        "wireName": "stories[max]",
+        "enum": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "10",
+          "15",
+          "20"
+        ]
+      },
+      "listingType[category]": {
+        "type": "array",
+        "description": "An array of listing categories.",
+        "wireName": "listingType[category][]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "byAgent",
+            "byOwnerFsbo",
+            "newConstruction",
+            "foreclosures"
+          ]
+        }
+      },
+      "listingTypeExcludeShortSales": {
+        "type": "boolean",
+        "description": "If set to true, short sales will be excluded.",
+        "wireName": "listingType[excludeShortSales]"
+      },
+      "listingTypeRedfinListingsOnly": {
+        "type": "boolean",
+        "description": "If set to true, only Redfin-listed properties will be included.",
+        "wireName": "listingType[redfinListingsOnly]"
+      },
+      "statusOptions": {
+        "type": "array",
+        "description": "An array of listing statuses.",
+        "wireName": "statusOptions[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "active",
+            "comingSoon",
+            "contingentPending"
+          ]
+        }
+      },
+      "onlyWithDealOrPromotion": {
+        "type": "boolean",
+        "description": "If set to true, only listings with a deal or promotion will be included.",
+        "wireName": "onlyWithDealOrPromotion"
+      },
+      "exclude55PlusCommunities": {
+        "type": "boolean",
+        "description": "If set to true, 55+ communities will be excluded.",
+        "wireName": "exclude55PlusCommunities"
+      },
+      "timeOnRedfin": {
+        "type": "string",
+        "description": "How long the listing has been on Redfin.",
+        "wireName": "timeOnRedfin",
+        "enum": [
+          "newListing",
+          "lessThan3Days",
+          "lessThan7Days",
+          "lessThan14Days",
+          "lessThan30Days",
+          "moreThan7Days",
+          "moreThan14Days",
+          "moreThan30Days",
+          "moreThan45Days",
+          "moreThan60Days",
+          "moreThan90Days",
+          "moreThan180Days"
+        ]
+      },
+      "soldWithinOption": {
+        "type": "string",
+        "description": "Filter sold listings by how recently they were sold.",
+        "wireName": "soldWithinOption",
+        "enum": [
+          "lastOneWeek",
+          "lastOneMonth",
+          "lastThreeMonth",
+          "lastSixMonth",
+          "lastYear",
+          "lastTwoYear",
+          "lastThreeYear",
+          "lastFiveYear"
+        ]
+      },
+      "moveInDate": {
+        "type": "string",
+        "description": "The desired move-in date in MM/DD/YYYY format.",
+        "wireName": "moveInDate"
+      },
+      "openHouseAndTourOpenHouse": {
+        "type": "string",
+        "description": "Filter listings with an open house.",
+        "wireName": "openHouseAndTour[openHouse]",
+        "enum": [
+          "thisWeekend",
+          "anytime"
+        ]
+      },
+      "openHouseAndTourVideoTour": {
+        "type": "boolean",
+        "description": "If set to true, only listings with a video tour will be included.",
+        "wireName": "openHouseAndTour[videoTour]"
+      },
+      "homeFeatures[options]": {
+        "type": "array",
+        "description": "An array of home feature flags to filter the listings.",
+        "wireName": "homeFeatures[options][]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "airConditioning",
+            "waterfront",
+            "hasAView",
+            "fireplace",
+            "fixerUpper",
+            "guestHouse",
+            "elevator",
+            "washerDryerHookup",
+            "petsAllowed",
+            "primaryBedroomOnMainFloor",
+            "rvparking",
+            "greenHome",
+            "accessibleHome",
+            "includeOutdoorParking"
+          ]
+        }
+      },
+      "homeFeaturesGarageSpotsMin": {
+        "type": "string",
+        "description": "The minimum number of garage spots.",
+        "wireName": "homeFeatures[garageSpotsMin]",
+        "enum": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ]
+      },
+      "homeFeaturesPoolType": {
+        "type": "string",
+        "description": "The type of pool.",
+        "wireName": "homeFeatures[poolType]",
+        "enum": [
+          "privatePool",
+          "communityPool",
+          "privateOrCommunityPool",
+          "noPrivatePool"
+        ]
+      },
+      "homeFeaturesBasement": {
+        "type": "string",
+        "description": "The basement type.",
+        "wireName": "homeFeatures[basement]",
+        "enum": [
+          "finished",
+          "unfinished"
+        ]
+      },
+      "homeFeaturesKeywordSearch": {
+        "type": "string",
+        "description": "A free-text keyword search applied to listing descriptions.",
+        "wireName": "homeFeatures[keywordSearch]"
+      },
+      "rentalAmenities": {
+        "type": "array",
+        "description": "An array of rental amenities to filter the listings.",
+        "wireName": "rentalAmenities[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "airConditioning",
+            "dishwasher",
+            "inUnitWasherDryer",
+            "parkingAllowed",
+            "utilitiesIncluded",
+            "attFiber",
+            "furnished",
+            "laundryFacility",
+            "pool",
+            "washerDryerHookup"
+          ]
+        }
+      },
+      "rentalOtherTerms": {
+        "type": "array",
+        "description": "An array of additional rental terms.",
+        "wireName": "rentalOtherTerms[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "incomeRestricted",
+            "student",
+            "shortTerm",
+            "seniorLiving",
+            "military"
+          ]
+        }
+      },
+      "pets": {
+        "type": "array",
+        "description": "An array of pet types allowed.",
+        "wireName": "pets[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "dogsAllowed",
+            "catsAllowed"
+          ]
+        }
+      },
+      "schoolsGreatSchoolRating": {
+        "type": "number",
+        "description": "The minimum GreatSchools rating (1-10).",
+        "wireName": "schools[greatSchoolRating]"
+      },
+      "schools[schoolType]": {
+        "type": "array",
+        "description": "An array of school types.",
+        "wireName": "schools[schoolType][]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "elementary",
+            "middle",
+            "high"
+          ]
+        }
+      },
+      "schoolsIncludeUnratedSchools": {
+        "type": "boolean",
+        "description": "If set to true, unrated schools will be included.",
+        "wireName": "schools[includeUnratedSchools]"
+      },
+      "transportScoresWalkScore": {
+        "type": "number",
+        "description": "The minimum walk score (1-100).",
+        "wireName": "transportScores[walkScore]"
+      },
+      "transportScoresTransitScore": {
+        "type": "number",
+        "description": "The minimum transit score (1-100).",
+        "wireName": "transportScores[transitScore]"
+      },
+      "transportScoresBikeScore": {
+        "type": "number",
+        "description": "The minimum bike score (1-100).",
+        "wireName": "transportScores[bikeScore]"
+      },
       "page": {
         "type": "number",
         "description": "The page number of the results to retrieve.",
