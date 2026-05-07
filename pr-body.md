@@ -1,13 +1,11 @@
 ## Changes
 
- src/endpoints.generated.ts | 2874 ++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 2496 insertions(+), 378 deletions(-)
+ src/endpoints.generated.ts | 630 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 616 insertions(+), 14 deletions(-)
 
 ## Endpoint delta
 
 ### Added
-- youtube-channel-api
-- youtube-search-api
-- youtube-transcript-api
-- youtube-video-api
+- booking-place
+- booking-search
 
