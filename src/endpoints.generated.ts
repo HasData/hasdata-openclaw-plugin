@@ -1112,6 +1112,605 @@ export const ENDPOINTS = {
       }
     }
   },
+  "booking-place": {
+    "slug": "booking-place",
+    "title": "Booking Place API",
+    "description": "The Booking Place API returns full details for a single Booking.com property along with the list of available room suites for the requested stay dates and guest composition.",
+    "category": "Booking",
+    "method": "GET",
+    "path": "/scrape/booking/place",
+    "cost": 10,
+    "required": [
+      "url",
+      "checkInDate",
+      "checkOutDate",
+      "rooms",
+      "adults",
+      "children"
+    ],
+    "properties": {
+      "url": {
+        "type": "string",
+        "description": "Full Booking.com URL of the property page. Only `booking.com` and `www.booking.com` hosts are accepted.",
+        "wireName": "url",
+        "default": "https://www.booking.com/hotel/fr/le-bristol-paris.html"
+      },
+      "checkInDate": {
+        "type": "string",
+        "description": "Check-in date in `YYYY-MM-DD` format. Must be in the future and earlier than `checkOutDate`.",
+        "wireName": "checkInDate",
+        "default": "2026-06-01"
+      },
+      "checkOutDate": {
+        "type": "string",
+        "description": "Check-out date in `YYYY-MM-DD` format. Must be later than `checkInDate`.",
+        "wireName": "checkOutDate",
+        "default": "2026-06-05"
+      },
+      "rooms": {
+        "type": "integer",
+        "description": "Number of rooms to book.",
+        "wireName": "rooms",
+        "default": 1
+      },
+      "adults": {
+        "type": "integer",
+        "description": "Number of adult guests across all rooms.",
+        "wireName": "adults",
+        "default": 2
+      },
+      "children": {
+        "type": "integer",
+        "description": "Number of child guests across all rooms (0–10). Pass `0` if there are no children.",
+        "wireName": "children",
+        "default": 0
+      },
+      "childrenAgesJson": {
+        "type": "string",
+        "description": "JSON-encoded array of child ages, one entry per child (each `0`–`17`). Required when `children > 0` and the array length must equal `children`. Must not be passed when `children = 0`. Example: `[1, 3, 7]`",
+        "wireName": "childrenAgesJson"
+      },
+      "language": {
+        "type": "string",
+        "description": "Language of the Booking.com interface and localized fields in the response.",
+        "wireName": "language",
+        "enum": [
+          "en-us",
+          "en-gb",
+          "de",
+          "nl",
+          "fr",
+          "es",
+          "es-ar",
+          "es-mx",
+          "ca",
+          "it",
+          "pt-pt",
+          "pt-br",
+          "no",
+          "fi",
+          "sv",
+          "da",
+          "cs",
+          "hu",
+          "ro",
+          "ja",
+          "zh-cn",
+          "zh-tw",
+          "pl",
+          "el",
+          "ru",
+          "tr",
+          "bg",
+          "ar",
+          "ko",
+          "he",
+          "lv",
+          "uk",
+          "hi",
+          "id",
+          "ms",
+          "th",
+          "et",
+          "hr",
+          "lt",
+          "sk",
+          "sr",
+          "sl",
+          "vi",
+          "tl",
+          "is"
+        ]
+      },
+      "currency": {
+        "type": "string",
+        "description": "Currency of the prices returned in the response. Use `hotelCurrency` to keep each property's native currency.",
+        "wireName": "currency",
+        "enum": [
+          "hotelCurrency",
+          "usd",
+          "eur",
+          "aed",
+          "ars",
+          "aud",
+          "azn",
+          "bhd",
+          "brl",
+          "cad",
+          "chf",
+          "clp",
+          "cny",
+          "cop",
+          "czk",
+          "dkk",
+          "egp",
+          "fjd",
+          "gbp",
+          "gel",
+          "hkd",
+          "huf",
+          "idr",
+          "ils",
+          "inr",
+          "isk",
+          "jod",
+          "jpy",
+          "krw",
+          "kwd",
+          "kzt",
+          "mdl",
+          "mop",
+          "mxn",
+          "myr",
+          "nad",
+          "nok",
+          "nzd",
+          "omr",
+          "pln",
+          "qar",
+          "ron",
+          "rub",
+          "sar",
+          "sek",
+          "sgd",
+          "thb",
+          "try",
+          "twd",
+          "uah",
+          "xof",
+          "zar"
+        ]
+      }
+    }
+  },
+  "booking-search": {
+    "slug": "booking-search",
+    "title": "Booking Search API",
+    "description": "The Booking Search API returns the collection of accommodations from a Booking.com search results page for a given destination and stay dates, with rich filtering by property type, rating, facilities, price and more.",
+    "category": "Booking",
+    "method": "GET",
+    "path": "/scrape/booking/search",
+    "cost": 10,
+    "required": [
+      "keyword",
+      "checkInDate",
+      "checkOutDate",
+      "rooms",
+      "adults",
+      "children"
+    ],
+    "properties": {
+      "keyword": {
+        "type": "string",
+        "description": "Free-text destination query. Usually a city, region or neighborhood (e.g. `Paris`, `Manhattan, New York`); a specific property name is also accepted.",
+        "wireName": "keyword",
+        "default": "Paris"
+      },
+      "sort": {
+        "type": "string",
+        "description": "Sort order applied by Booking.com to the results page.",
+        "wireName": "sort",
+        "enum": [
+          "ourTopPicks",
+          "homesAndApartmentsFirst",
+          "priceLowestFirst",
+          "priceHighestFirst",
+          "bestReviewedAndLowestPrice",
+          "ratingHighToLow",
+          "ratingLowToHigh",
+          "ratingAndPrice",
+          "distanceFromDowntown",
+          "topReviewed"
+        ]
+      },
+      "checkInDate": {
+        "type": "string",
+        "description": "Check-in date in `YYYY-MM-DD` format. Must be in the future and earlier than `checkOutDate`.",
+        "wireName": "checkInDate",
+        "default": "2026-06-01"
+      },
+      "checkOutDate": {
+        "type": "string",
+        "description": "Check-out date in `YYYY-MM-DD` format. Must be later than `checkInDate`.",
+        "wireName": "checkOutDate",
+        "default": "2026-06-05"
+      },
+      "rooms": {
+        "type": "integer",
+        "description": "Number of rooms to book.",
+        "wireName": "rooms",
+        "default": 1
+      },
+      "adults": {
+        "type": "integer",
+        "description": "Number of adult guests across all rooms.",
+        "wireName": "adults",
+        "default": 2
+      },
+      "children": {
+        "type": "integer",
+        "description": "Number of child guests across all rooms (0–10). Pass `0` if there are no children.",
+        "wireName": "children",
+        "default": 0
+      },
+      "childrenAgesJson": {
+        "type": "string",
+        "description": "JSON-encoded array of child ages, one entry per child (each `0`–`17`). Required when `children > 0` and the array length must equal `children`. Must not be passed when `children = 0`. Example: `[1, 3, 7]`",
+        "wireName": "childrenAgesJson"
+      },
+      "priceMin": {
+        "type": "number",
+        "description": "Minimum total price for the stay, in the requested `currency`. Must be `>= 10`. Required if `price[max]` is omitted.",
+        "wireName": "price[min]"
+      },
+      "priceMax": {
+        "type": "number",
+        "description": "Maximum total price for the stay, in the requested `currency`. Must be `>= 20` and greater than `price[min]`. Required if `price[min]` is omitted.",
+        "wireName": "price[max]"
+      },
+      "bedrooms": {
+        "type": "integer",
+        "description": "Minimum number of bedrooms in the property.",
+        "wireName": "bedrooms"
+      },
+      "bathrooms": {
+        "type": "integer",
+        "description": "Minimum number of bathrooms in the property.",
+        "wireName": "bathrooms"
+      },
+      "propertyType": {
+        "type": "array",
+        "description": "Filter by property type. Multiple values are combined with OR.",
+        "wireName": "propertyType[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "hostels",
+            "bedAndBreakfast",
+            "hotels",
+            "apartments",
+            "resorts",
+            "guesthouses",
+            "homestays",
+            "entireHomesAndApartments"
+          ]
+        }
+      },
+      "rating": {
+        "type": "array",
+        "description": "Filter by official star rating. Multiple values are combined with OR.",
+        "wireName": "rating[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "oneStar",
+            "twoStars",
+            "threeStars",
+            "fourStars",
+            "fiveStars"
+          ]
+        }
+      },
+      "reviewScore": {
+        "type": "array",
+        "description": "Filter by minimum guest review score bucket. Multiple values are combined with OR.",
+        "wireName": "reviewScore[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "wonderful",
+            "veryGood",
+            "good",
+            "pleasant"
+          ]
+        }
+      },
+      "distanceFromCenter": {
+        "type": "array",
+        "description": "Filter by distance from the destination center. Multiple values are combined with OR.",
+        "wireName": "distanceFromCenter[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "lessThan1Km",
+            "lessThan3Km",
+            "lessThan5Km"
+          ]
+        }
+      },
+      "propertyAccessibility": {
+        "type": "array",
+        "description": "Filter by property-level accessibility features. Multiple values are combined with OR.",
+        "wireName": "propertyAccessibility[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "auditoryGuidance",
+            "toiletWithGrabRails",
+            "visualAidsTactileSigns",
+            "visualAidsBraille",
+            "bathroomEmergencyCord",
+            "raisedToilet",
+            "loweredSink"
+          ]
+        }
+      },
+      "meals": {
+        "type": "array",
+        "description": "Filter by available meal plans. Multiple values are combined with OR.",
+        "wireName": "meals[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "breakfastIncluded",
+            "kitchenFacilities"
+          ]
+        }
+      },
+      "facilities": {
+        "type": "array",
+        "description": "Filter by property-level facilities. Multiple values are combined with OR.",
+        "wireName": "facilities[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "swimmingPool",
+            "parking",
+            "spa",
+            "freeWifi",
+            "hotTubJacuzzi",
+            "airportShuttle",
+            "fitnessCenter",
+            "restaurant",
+            "nonSmokingRooms",
+            "frontDesk24Hour",
+            "electricVehicleChargingStation",
+            "wheelchairAccessible",
+            "roomService"
+          ]
+        }
+      },
+      "roomFacilities": {
+        "type": "array",
+        "description": "Filter by in-room facilities. Multiple values are combined with OR.",
+        "wireName": "roomFacilities[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "privateBathroom",
+            "balcony",
+            "seaView",
+            "kitchenKitchenette",
+            "airConditioning",
+            "bathtub",
+            "hotTub",
+            "view",
+            "spaTub",
+            "upperFloorsAccessibleByElevator",
+            "microwave",
+            "refrigerator",
+            "coffeeMachine",
+            "electricKettle",
+            "heating",
+            "towels",
+            "toilet",
+            "mountainView",
+            "flatScreenTv",
+            "tv",
+            "coffeeTeaMaker",
+            "hairdryer",
+            "toiletPaper",
+            "shower",
+            "linens"
+          ]
+        }
+      },
+      "roomAccessibility": {
+        "type": "array",
+        "description": "Filter by in-room accessibility features. Multiple values are combined with OR.",
+        "wireName": "roomAccessibility[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "upperFloorsAccessibleByElevator",
+            "entireUnitLocatedOnGroundFloor",
+            "walkInShower",
+            "entireUnitWheelchairAccessible",
+            "adaptedBath",
+            "rollInShower",
+            "showerChair",
+            "emergencyCordInBathroom",
+            "toiletWithGrabRails",
+            "raisedToilet",
+            "lowerSink"
+          ]
+        }
+      },
+      "bedPreference": {
+        "type": "array",
+        "description": "Filter by bed configuration. Multiple values are combined with OR.",
+        "wireName": "bedPreference[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "twinBeds",
+            "doubleBed"
+          ]
+        }
+      },
+      "reservationPolicy": {
+        "type": "array",
+        "description": "Filter by reservation flexibility. Multiple values are combined with OR.",
+        "wireName": "reservationPolicy[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "freeCancellation",
+            "noPrepayment"
+          ]
+        }
+      },
+      "onlinePayment": {
+        "type": "array",
+        "description": "Filter by online payment options.",
+        "wireName": "onlinePayment[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "acceptsOnlinePayments"
+          ]
+        }
+      },
+      "travelGroup": {
+        "type": "array",
+        "description": "Filter by travel-group oriented stay options. Multiple values are combined with OR.",
+        "wireName": "travelGroup[]",
+        "items": {
+          "type": "string",
+          "enum": [
+            "adultsOnly",
+            "petFriendly"
+          ]
+        }
+      },
+      "language": {
+        "type": "string",
+        "description": "Language of the Booking.com interface and localized fields in the response.",
+        "wireName": "language",
+        "enum": [
+          "en-us",
+          "en-gb",
+          "de",
+          "nl",
+          "fr",
+          "es",
+          "es-ar",
+          "es-mx",
+          "ca",
+          "it",
+          "pt-pt",
+          "pt-br",
+          "no",
+          "fi",
+          "sv",
+          "da",
+          "cs",
+          "hu",
+          "ro",
+          "ja",
+          "zh-cn",
+          "zh-tw",
+          "pl",
+          "el",
+          "ru",
+          "tr",
+          "bg",
+          "ar",
+          "ko",
+          "he",
+          "lv",
+          "uk",
+          "hi",
+          "id",
+          "ms",
+          "th",
+          "et",
+          "hr",
+          "lt",
+          "sk",
+          "sr",
+          "sl",
+          "vi",
+          "tl",
+          "is"
+        ]
+      },
+      "currency": {
+        "type": "string",
+        "description": "Currency of the prices returned in the response. Use `hotelCurrency` to keep each property's native currency.",
+        "wireName": "currency",
+        "enum": [
+          "hotelCurrency",
+          "usd",
+          "eur",
+          "aed",
+          "ars",
+          "aud",
+          "azn",
+          "bhd",
+          "brl",
+          "cad",
+          "chf",
+          "clp",
+          "cny",
+          "cop",
+          "czk",
+          "dkk",
+          "egp",
+          "fjd",
+          "gbp",
+          "gel",
+          "hkd",
+          "huf",
+          "idr",
+          "ils",
+          "inr",
+          "isk",
+          "jod",
+          "jpy",
+          "krw",
+          "kwd",
+          "kzt",
+          "mdl",
+          "mop",
+          "mxn",
+          "myr",
+          "nad",
+          "nok",
+          "nzd",
+          "omr",
+          "pln",
+          "qar",
+          "ron",
+          "rub",
+          "sar",
+          "sek",
+          "sgd",
+          "thb",
+          "try",
+          "twd",
+          "uah",
+          "xof",
+          "zar"
+        ]
+      },
+      "page": {
+        "type": "integer",
+        "description": "Page number of the search results. Booking.com returns 25 results per page; pass `2` for results 26–50, `3` for 51–75, etc.",
+        "wireName": "page"
+      }
+    }
+  },
   "glassdoor-job": {
     "slug": "glassdoor-job",
     "title": "Glassdoor Job API",
@@ -15078,13 +15677,13 @@ export const ENDPOINTS = {
     "properties": {
       "channelId": {
         "type": "string",
-        "description": "YouTube channel ID or handle (e.g. `UCxxxxxx` or `@PewDiePie`).",
+        "description": "YouTube channel identifier — either the canonical channel ID (`UC…`, 24 chars) or the public handle starting with `@` (e.g. `@PewDiePie`). Legacy `/c/<custom>` and `/user/<name>` URL slugs are also accepted.",
         "wireName": "channelId",
         "default": "@PewDiePie"
       },
       "tab": {
         "type": "string",
-        "description": "Channel tab to scrape. Defaults to `featured` (Home tab).",
+        "description": "Channel tab to scrape. Each tab returns a different content shape: - `featured` (default) — channel Home page (channel trailer + curated rows) - `videos` — uploaded long-form videos - `shorts` — Shorts feed - `streams` — past and upcoming live streams - `playlists` — created and saved playlists - `posts` / `community` — community posts - `podcasts` — podcast episodes - `releases` — music releases - `about` — channel description, links, stats - `store` — channel merch",
         "wireName": "tab",
         "enum": [
           "featured",
@@ -15548,7 +16147,7 @@ export const ENDPOINTS = {
     "properties": {
       "q": {
         "type": "string",
-        "description": "The search query.",
+        "description": "Free-text search query, exactly as a user would type it into the YouTube search box.",
         "wireName": "q",
         "default": "BMW"
       },
@@ -15981,12 +16580,12 @@ export const ENDPOINTS = {
       },
       "sp": {
         "type": "string",
-        "description": "Raw YouTube `sp` filter parameter.",
+        "description": "Raw YouTube `sp` filter token, copied verbatim from a YouTube search URL (e.g. `EgIQAQ%253D%253D`). When provided, it overrides `sortBy`, `date`, `videoType`, `length`, and `filters[]`. Use only if you need a YouTube-side filter that this API does not expose as a structured parameter.",
         "wireName": "sp"
       },
       "sortBy": {
         "type": "string",
-        "description": "Sort order of results.",
+        "description": "Sort order applied to the results page. `relevance` (default) — best match for the query; `date` — newest first; `views` — most viewed first; `rating` — highest rated first; `popularity` — trending/most popular.",
         "wireName": "sortBy",
         "enum": [
           "relevance",
@@ -15998,7 +16597,7 @@ export const ENDPOINTS = {
       },
       "date": {
         "type": "string",
-        "description": "Filter by upload date.",
+        "description": "Limit results to videos uploaded within this time window relative to now.",
         "wireName": "date",
         "enum": [
           "hour",
@@ -16010,7 +16609,7 @@ export const ENDPOINTS = {
       },
       "videoType": {
         "type": "string",
-        "description": "Filter by content type.",
+        "description": "Restrict results to a single YouTube content type — regular videos, Shorts, channels, playlists, or movies.",
         "wireName": "videoType",
         "enum": [
           "video",
@@ -16022,7 +16621,7 @@ export const ENDPOINTS = {
       },
       "length": {
         "type": "string",
-        "description": "Filter by video duration.",
+        "description": "Filter by video duration bucket: - `under4` — under 4 minutes - `between420` — 4 to 20 minutes - `plus20` — over 20 minutes",
         "wireName": "length",
         "enum": [
           "under4",
@@ -16032,7 +16631,7 @@ export const ENDPOINTS = {
       },
       "filters": {
         "type": "array",
-        "description": "An array of feature filters to apply. Can include any combination of the supported values.",
+        "description": "Feature flags to require on results. Multiple values are combined with AND (every flag must apply). - `hd` — HD quality - `k4` — 4K quality - `hdr` — HDR - `subtitles` — has subtitles/closed captions - `cc` — Creative Commons license - `d3` — 3D video - `d360` — 360° video - `vr180` — VR180 video - `live` — currently live - `bought` — purchased/paid content - `location` — has a geographic location tag",
         "wireName": "filters[]",
         "items": {
           "type": "string",
@@ -16072,20 +16671,23 @@ export const ENDPOINTS = {
     "properties": {
       "v": {
         "type": "string",
-        "description": "YouTube video ID (e.g. `dQw4w9WgXcQ`).",
+        "description": "11-character YouTube video ID — the value of the `v=` query parameter in a watch URL (e.g. `dQw4w9WgXcQ` for `https://www.youtube.com/watch?v=dQw4w9WgXcQ`).",
         "wireName": "v",
         "default": "dQw4w9WgXcQ"
       },
       "languageCode": {
         "type": "string",
-        "description": "Language code for the transcript (e.g. `en`, `de`, `en-US`).",
+        "description": "BCP-47 / YouTube language code of the transcript track to return (e.g. `en`, `de`, `en-US`, `pt-BR`). Must match a track that the video actually has. When omitted, the video's default language track is returned.",
         "wireName": "languageCode",
         "default": "en"
       },
       "type": {
         "type": "string",
-        "description": "Transcript type (e.g. `asr` for auto-generated).",
-        "wireName": "type"
+        "description": "Set to `asr` to fetch the YouTube auto-generated (speech-recognition) track. Omit to fetch the human-authored track for `languageCode` when one exists.",
+        "wireName": "type",
+        "enum": [
+          "asr"
+        ]
       }
     }
   },
@@ -16103,7 +16705,7 @@ export const ENDPOINTS = {
     "properties": {
       "v": {
         "type": "string",
-        "description": "YouTube video ID (e.g. `dQw4w9WgXcQ`).",
+        "description": "11-character YouTube video ID — the value of the `v=` query parameter in a watch URL (e.g. `dQw4w9WgXcQ` for `https://www.youtube.com/watch?v=dQw4w9WgXcQ`).",
         "wireName": "v",
         "default": "dQw4w9WgXcQ"
       },
