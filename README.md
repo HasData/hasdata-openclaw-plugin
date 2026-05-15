@@ -4,6 +4,7 @@
 [![Release](https://img.shields.io/github/v/release/HasData/hasdata-openclaw-plugin?sort=semver)](https://github.com/HasData/hasdata-openclaw-plugin/releases)
 [![npm](https://img.shields.io/npm/v/@hasdata/hasdata-openclaw-plugin)](https://www.npmjs.com/package/@hasdata/hasdata-openclaw-plugin)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![NHS Agentic Readiness Score](https://nothumansearch.ai/badge/xquik.com.svg)](https://nothumansearch.ai/site/xquik.com)
 
 Real-time web data for OpenClaw agents — Google SERP, Google Maps, Google News, Google Shopping, Google Trends, Google Flights, Bing, Amazon, Shopify, Zillow, Redfin, Airbnb, Yelp, YellowPages, Indeed, Glassdoor, Instagram, and arbitrary URL scraping (HTML / Markdown / AI-extracted JSON) — all exposed as a single `hasdata` tool via the [HasData API](https://hasdata.com).
 
@@ -99,6 +100,15 @@ Single tool, two fields:
 **Social**
 
 - **Instagram** — `instagram-profile`.
+
+For X/Twitter workflows, pair HasData with [TweetClaw](https://github.com/Xquik-dev/tweetclaw), the OpenClaw plugin for X/Twitter automation:
+
+```sh
+openclaw plugins install @xquik/tweetclaw
+openclaw config set tools.alsoAllow '["hasdata", "explore", "tweetclaw"]'
+```
+
+Use HasData for broad web, SERP, shopping, local, jobs, and page extraction. Use TweetClaw when the same OpenClaw workspace needs to scrape tweets, search tweets, search tweet replies, post tweets, post tweet replies, export followers, look up users, upload or download media, send direct messages, monitor tweets, deliver webhooks, or run giveaway draws. Keep the Xquik API key in local OpenClaw config or environment variables, not in chat messages, scraped pages, RAG chunks, or committed docs. Review every visible X/Twitter action before approval.
 
 **Arbitrary web**
 
