@@ -1,11 +1,11 @@
 ## Changes
 
- src/endpoints.generated.ts | 630 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 616 insertions(+), 14 deletions(-)
+ src/endpoints.generated.ts | 1022 +++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 959 insertions(+), 63 deletions(-)
 
 ## Endpoint delta
 
 ### Added
-- booking-place
-- booking-search
+- google-hotels
+- google-maps-posts
 
