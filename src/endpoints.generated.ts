@@ -38,27 +38,25 @@ export const ENDPOINTS = {
     "path": "/scrape/airbnb/listing",
     "cost": 5,
     "required": [
-      "location",
       "checkIn"
     ],
     "properties": {
       "location": {
         "type": "string",
-        "description": "The location to search for listings.",
-        "wireName": "location",
-        "default": "New York"
+        "description": "The location to search for listings. Required unless a full map bounding box (neLat, neLng, swLat, swLng) is provided.",
+        "wireName": "location"
       },
       "checkIn": {
         "type": "string",
         "description": "The check-in date for the listings.",
         "wireName": "checkIn",
-        "default": "2026-01-01"
+        "default": "2026-09-20"
       },
       "checkOut": {
         "type": "string",
         "description": "The check-out date for the listings.",
         "wireName": "checkOut",
-        "default": "2026-01-05"
+        "default": "2026-09-24"
       },
       "adults": {
         "type": "integer",
@@ -79,6 +77,30 @@ export const ENDPOINTS = {
         "type": "integer",
         "description": "Number of pets.",
         "wireName": "pets"
+      },
+      "neLat": {
+        "type": "number",
+        "description": "North-east corner latitude of the map bounding box. When all four bounding-box coordinates are provided, listings are searched within the box instead of by location.",
+        "wireName": "neLat",
+        "default": 40.8
+      },
+      "neLng": {
+        "type": "number",
+        "description": "North-east corner longitude of the map bounding box.",
+        "wireName": "neLng",
+        "default": -73.9
+      },
+      "swLat": {
+        "type": "number",
+        "description": "South-west corner latitude of the map bounding box.",
+        "wireName": "swLat",
+        "default": 40.6
+      },
+      "swLng": {
+        "type": "number",
+        "description": "South-west corner longitude of the map bounding box.",
+        "wireName": "swLng",
+        "default": -74.1
       },
       "nextPageToken": {
         "type": "string",
@@ -111,7 +133,7 @@ export const ENDPOINTS = {
     "slug": "amazon-product",
     "title": "Amazon Product Scraper API",
     "description": "The Amazon Product Scraper API allows users to get product details from Amazon based on the specified ASIN and domain. This API enables retrieving detailed information about a specific product on Amazon.",
-    "category": "Amazon",
+    "category": "E-commerce",
     "method": "GET",
     "path": "/scrape/amazon/product",
     "cost": 5,
@@ -446,7 +468,7 @@ export const ENDPOINTS = {
     "slug": "amazon-search",
     "title": "Amazon Search Scraper API",
     "description": "The Amazon Search Scraper API allows users to get search results from Amazon based on the specified query and domain. This API enables searching for products on Amazon.",
-    "category": "Amazon",
+    "category": "E-commerce",
     "method": "GET",
     "path": "/scrape/amazon/search",
     "cost": 5,
@@ -793,7 +815,7 @@ export const ENDPOINTS = {
     "slug": "amazon-seller",
     "title": "Amazon Seller Scraper API",
     "description": "The Amazon Seller Scraper API allows users to retrieve detailed information about a specific Amazon seller using the seller ID, with optional domain and language settings.",
-    "category": "Amazon",
+    "category": "E-commerce",
     "method": "GET",
     "path": "/scrape/amazon/seller",
     "cost": 5,
@@ -872,7 +894,7 @@ export const ENDPOINTS = {
     "slug": "amazon-seller-products",
     "title": "Amazon Seller Products Scraper API",
     "description": "The Amazon Seller Products Scraper API allows users to retrieve products listed by a specific Amazon seller using the seller ID, with optional domain, language, and page settings.",
-    "category": "Amazon",
+    "category": "E-commerce",
     "method": "GET",
     "path": "/scrape/amazon/seller-products",
     "cost": 5,
@@ -955,7 +977,7 @@ export const ENDPOINTS = {
   "bing-serp": {
     "slug": "bing-serp",
     "title": "Bing SERP API",
-    "description": "The Bing SERP API provides real-time access to structured Bing search results, offering no blocks or CAPTCHAs.",
+    "description": "The Bing SERP API provides real-time access to structured Bing search results with a high success rate at scale.",
     "category": "Bing",
     "method": "GET",
     "path": "/scrape/bing/serp",
@@ -972,9 +994,9 @@ export const ENDPOINTS = {
       },
       "location": {
         "type": "string",
-        "description": "Defines the search’s origin location. For realistic results, set location at the city level. If omitted, the proxy’s location may be used.",
+        "description": "Defines the search’s origin location as free text (e.g. `Austin, Texas`). It is resolved to coordinates to localize the results. For realistic results, set location at the city level. If both `lat` and `lon` are provided, they take precedence and `location` is ignored. If omitted, the proxy’s location may be used.",
         "wireName": "location",
-        "default": "Austin,Texas,United States"
+        "default": "Austin, Texas, United States"
       },
       "lat": {
         "type": "string",
@@ -1074,10 +1096,56 @@ export const ENDPOINTS = {
           "us"
         ]
       },
-      "safe": {
+      "setLang": {
+        "type": "string",
+        "description": "The language of the user interface and preferred result language. Accepts a two-letter language code (e.g. `en`, `de`) or a locale/script variant (e.g. `en-gb`, `zh-hans`, `pt-br`).",
+        "wireName": "setLang",
+        "enum": [
+          "ar",
+          "bg",
+          "ca",
+          "zh-hans",
+          "zh-hant",
+          "hr",
+          "cs",
+          "da",
+          "nl",
+          "en",
+          "en-gb",
+          "et",
+          "fi",
+          "fr",
+          "de",
+          "he",
+          "hi",
+          "hu",
+          "it",
+          "jp",
+          "ko",
+          "lv",
+          "lt",
+          "ms",
+          "nb",
+          "pl",
+          "pt-br",
+          "pt-pt",
+          "ro",
+          "ru",
+          "sr",
+          "sk",
+          "sl",
+          "es",
+          "sv",
+          "th",
+          "tr",
+          "uk",
+          "vi"
+        ]
+      },
+      "safeSearch": {
         "type": "string",
         "description": "Adult Content Filtering option.",
-        "wireName": "safe",
+        "wireName": "safeSearch",
         "enum": [
           "off",
           "moderate",
@@ -1104,17 +1172,12 @@ export const ENDPOINTS = {
         "type": "integer",
         "description": "This parameter specifies the number of search results to skip and is used for implementing pagination. For example, a value of 1 (default) indicates the first page of results, 11 refers to the second page, and 21 to the third page.",
         "wireName": "first"
-      },
-      "count": {
-        "type": "integer",
-        "description": "Number of results per page, ranging from 1 to 50.",
-        "wireName": "count"
       }
     }
   },
   "booking-place": {
     "slug": "booking-place",
-    "title": "Booking.com Place API",
+    "title": "Booking.com Place Scraper API",
     "description": "The Booking.com Place API returns full details for a single Booking.com property along with the list of available room suites for the requested stay dates and guest composition.",
     "category": "Booking",
     "method": "GET",
@@ -1139,13 +1202,13 @@ export const ENDPOINTS = {
         "type": "string",
         "description": "Check-in date in `YYYY-MM-DD` format. Must be in the future and earlier than `checkOutDate`.",
         "wireName": "checkInDate",
-        "default": "2026-06-01"
+        "default": "2026-09-20"
       },
       "checkOutDate": {
         "type": "string",
         "description": "Check-out date in `YYYY-MM-DD` format. Must be later than `checkInDate`.",
         "wireName": "checkOutDate",
-        "default": "2026-06-05"
+        "default": "2026-09-24"
       },
       "rooms": {
         "type": "integer",
@@ -1285,7 +1348,7 @@ export const ENDPOINTS = {
   },
   "booking-search": {
     "slug": "booking-search",
-    "title": "Booking.com Search API",
+    "title": "Booking.com Search Scraper API",
     "description": "The Booking.com Search API returns the collection of accommodations from a Booking.com search results page for a given destination and stay dates, with rich filtering by property type, rating, facilities, price and more.",
     "category": "Booking",
     "method": "GET",
@@ -1327,13 +1390,13 @@ export const ENDPOINTS = {
         "type": "string",
         "description": "Check-in date in `YYYY-MM-DD` format. Must be in the future and earlier than `checkOutDate`.",
         "wireName": "checkInDate",
-        "default": "2026-06-01"
+        "default": "2026-09-20"
       },
       "checkOutDate": {
         "type": "string",
         "description": "Check-out date in `YYYY-MM-DD` format. Must be later than `checkInDate`.",
         "wireName": "checkOutDate",
-        "default": "2026-06-05"
+        "default": "2026-09-24"
       },
       "rooms": {
         "type": "integer",
@@ -1708,6 +1771,177 @@ export const ENDPOINTS = {
         "type": "integer",
         "description": "Page number of the search results. Booking.com returns 25 results per page; pass `2` for results 26–50, `3` for 51–75, etc.",
         "wireName": "page"
+      }
+    }
+  },
+  "duckduckgo": {
+    "slug": "duckduckgo",
+    "title": "DuckDuckGo SERP API",
+    "description": "The DuckDuckGo SERP API provides real-time access to structured DuckDuckGo search results with a high success rate at scale.",
+    "category": "DuckDuckGo",
+    "method": "GET",
+    "path": "/scrape/duckduckgo/serp",
+    "cost": 10,
+    "required": [],
+    "properties": {
+      "q": {
+        "type": "string",
+        "description": "Specify the search term for which you want to scrape the SERP. Required unless `nextPageToken` is provided (which carries the query of the page it continues).",
+        "wireName": "q",
+        "default": "Coffee"
+      },
+      "kl": {
+        "type": "string",
+        "description": "DuckDuckGo region code in `<country>-<language>` form (e.g. `us-en`, `de-de`). Sets country and interface language at once; takes precedence over `cc`/`setLang`. Use `wt-wt` for no region.",
+        "wireName": "kl",
+        "enum": [
+          "ar-es",
+          "au-en",
+          "at-de",
+          "be-nl",
+          "be-fr",
+          "br-pt",
+          "ca-en",
+          "ca-fr",
+          "cl-es",
+          "dk-da",
+          "fi-fi",
+          "fr-fr",
+          "de-de",
+          "hk-tzh",
+          "in-en",
+          "id-en",
+          "it-it",
+          "jp-jp",
+          "kr-kr",
+          "my-en",
+          "mx-es",
+          "nl-nl",
+          "nz-en",
+          "no-no",
+          "cn-zh",
+          "pl-pl",
+          "ph-en",
+          "ru-ru",
+          "za-en",
+          "es-es",
+          "se-sv",
+          "ch-de",
+          "tw-tzh",
+          "tr-tr",
+          "uk-en",
+          "us-en",
+          "wt-wt"
+        ]
+      },
+      "cc": {
+        "type": "string",
+        "description": "The two-letter country code for the country to search from. Combined with `setLang` to form the DuckDuckGo region. Ignored if `kl` is set.",
+        "wireName": "cc",
+        "enum": [
+          "ar",
+          "au",
+          "at",
+          "be",
+          "br",
+          "ca",
+          "cl",
+          "dk",
+          "fi",
+          "fr",
+          "de",
+          "hk",
+          "in",
+          "id",
+          "it",
+          "jp",
+          "kr",
+          "my",
+          "mx",
+          "nl",
+          "nz",
+          "no",
+          "cn",
+          "pl",
+          "pt",
+          "ph",
+          "ru",
+          "sa",
+          "za",
+          "es",
+          "se",
+          "ch",
+          "tw",
+          "tr",
+          "gb",
+          "us"
+        ]
+      },
+      "setLang": {
+        "type": "string",
+        "description": "The preferred result/interface language code — usually two letters (e.g. `en`, `de`), with script-tag variants for some languages (e.g. `zh-hans`, `zh-hant`). Combined with `cc` to form the DuckDuckGo region. Ignored if `kl` is set.",
+        "wireName": "setLang",
+        "enum": [
+          "ar",
+          "ca",
+          "zh-hans",
+          "zh-hant",
+          "hr",
+          "cs",
+          "da",
+          "nl",
+          "en",
+          "et",
+          "fi",
+          "fr",
+          "de",
+          "he",
+          "hu",
+          "it",
+          "ja",
+          "ko",
+          "lv",
+          "lt",
+          "nb",
+          "pl",
+          "pt",
+          "ro",
+          "ru",
+          "sk",
+          "sl",
+          "es",
+          "sv",
+          "th",
+          "tr",
+          "uk",
+          "vi"
+        ]
+      },
+      "safeSearch": {
+        "type": "string",
+        "description": "Adult Content Filtering option.",
+        "wireName": "safeSearch",
+        "enum": [
+          "off",
+          "moderate",
+          "strict"
+        ]
+      },
+      "deviceType": {
+        "type": "string",
+        "description": "Specify the device type for the search.",
+        "wireName": "deviceType",
+        "default": "desktop",
+        "enum": [
+          "desktop",
+          "mobile",
+          "tablet"
+        ]
+      },
+      "nextPageToken": {
+        "type": "string",
+        "description": "Opaque token returned in each response as `nextPageToken`. Pass it back (in place of `q`) to fetch the next page of results. It carries a pre-signed page URL bound to the original request's session, so it must be used as-is and cannot be constructed manually. Absent when there are no further pages.",
+        "wireName": "nextPageToken"
       }
     }
   },
@@ -2953,13 +3187,13 @@ export const ENDPOINTS = {
         "type": "string",
         "description": "The outbound travel date in 'yyyy-MM-dd' format.",
         "wireName": "outboundDate",
-        "default": "2026-08-15"
+        "default": "2026-09-20"
       },
       "returnDate": {
         "type": "string",
         "description": "The return travel date in 'yyyy-MM-dd' format. Required when **type** is `roundTrip`.",
         "wireName": "returnDate",
-        "default": "2026-08-20"
+        "default": "2026-09-27"
       },
       "type": {
         "type": "string",
@@ -3627,13 +3861,13 @@ export const ENDPOINTS = {
         "type": "string",
         "description": "The check-in date in 'yyyy-MM-dd' format.",
         "wireName": "checkInDate",
-        "default": "2026-08-15"
+        "default": "2026-09-20"
       },
       "checkOutDate": {
         "type": "string",
         "description": "The check-out date in 'yyyy-MM-dd' format.",
         "wireName": "checkOutDate",
-        "default": "2026-08-20"
+        "default": "2026-09-24"
       },
       "gl": {
         "type": "string",
@@ -4308,7 +4542,7 @@ export const ENDPOINTS = {
   "google-images": {
     "slug": "google-images",
     "title": "Google Images API",
-    "description": "Provides real-time access to Google image search results, tailored to specific parameters, ensuring efficient retrieval free from blocks or CAPTCHAs.",
+    "description": "Provides real-time access to Google image search results, tailored to specific parameters, ensuring efficient and reliable retrieval at scale.",
     "category": "Google Images",
     "method": "GET",
     "path": "/scrape/google/images",
@@ -5007,7 +5241,7 @@ export const ENDPOINTS = {
         "type": "string",
         "description": "Token for displaying more product info in the Google immersive pop-up, available in the Google Shopping API response as the `immersiveProductPageToken` property.",
         "wireName": "pageToken",
-        "default": "eyJyZHMiOiJQQ18zMjQ1NDc2NDAwODMzNTUxOTQ4fFBST0RfUENfMzI0NTQ3NjQwMDgzMzU1MTk0OCIsInByb2R1Y3RpZCI6IjEyNTE4MTc2MDIxNjEyNzgxNzUyIiwiY2F0YWxvZ2lkIjoiMTY5MTQ4Nzc2MjUyODA5Nzc4NjUiLCJoZWFkbGluZU9mZmVyRG9jaWQiOiIxNzc2Njg4MTE3MjA4NzEzODU1NSIsImltYWdlRG9jaWQiOiIzNTQ4NDgyNzk5NTQyMzA0NzkxIiwiZ3BjaWQiOiIzMjQ1NDc2NDAwODMzNTUxOTQ4IiwibWlkIjoiNTc2NDYyNjEyMjgwMTMwNDgxIiwicSI6ImNvZmZlZSIsImhsIjoiZW4iLCJnbCI6InVzIiwiY29va2llcyI6Il9fU2VjdXJlLVNUUlA9QUVFUDdnTDhveTExMkFEcGdEZkdDVmtjdXVRMHNmal8ySlhHaktsbHVQVjhxTHBLVTg3UlN6RmJKd0FvYkNjWjVQUU8tYmJZdGRGd1JDYnBHWmFmVzdnc0ZaYjlQM3VPaF9kSTsgQUVDPUFhSm1hNXVoaGE4ZTdjUnF6cThoZG1Na3ExSmk2MGE4MU1kRkQ1Z2M0Szd4WjZaRnQ0S05RYVJLVkpJOyBOSUQ9NTMxPWcySHJDN296elVZUnVraDhFT1NzakN3QWw0cEFWN25mYkNvcVlnWEVmdVNEUWxWLW80WVZZamxvOTh3cW5taHoxWWQ4NF9jUkFhWlZBV1A4dTVkUzNOVHhKVG9ZcjlNbkI1S3h0R0NESWR4azAya2tGajhGbkdfalAzNGQwM0haR1RjNkV4SWpldlBGREQ5X2xCM1VpNmRabmhoLVlveXN6SUxLVTkwT1MxekZBdHJnNFU1NUE4YWVlVFdlQW5ieEgzSGUxTHRSSFY0UVc4Y2d3Vzc0dW45bTZpdThaaldDZVp0QUhoS0ZsbDdycTJGbG1ybDRRdTV6UGxzIiwieHNyZiI6IkFLUE9yMVM2YmtDejdIcEM0WVo0U2VmNzY4RWE0YnhLbGc6MTc3OTI2ODI0NjMxNCIsIm9hcHZmYyI6IkVvd0RDc3dDUVUxdU15MTVWR1JQTjNrNWJEWndTa1JQT0RWemVpMXJaSFF6YUU1SlVteGlSRE00Wm1WRWVVTXRjakZHYVcxM1lpMW9TRVU1T0ZJeU5UbGhTRXBvTlZKNVdrUTBjMHBKWHkxM1ZEVXhOVlowV25OdFMydFlYMUYzTlZKUmQycFNkREJtYlhWV01IcEdWSG95YVVsWWMzcGpWWGhDU0hJd2ExQmZPRW80YmpWdmNsVmFVR056UWsxMVNEUllkSGc1ZWxKSU9WbzBTMnhSZVhKTlRqZG9UMFIzUmpkT00wSjNWMUYwTmpsUFQxVkplRUZZVERKeFh6ZzBNVU4zTUZseGFqWmhkakp2VEZKSWQzbGZUVUU0WjBoUWRHMHpUMVZvU0cxRVJFbDZTMmhYTFRoa1JsRnRha1ZhVmt0d1pXZE1hMUpYT1ZrdExYbDZjMHhIZFhCSlR6VXhXa1JZTWxoU2VFaE5SRlphYVZOVE9YWklSMUpxU25WSVVsOU9RV1JOU1dSNVZYYzRiMHc1YVVkVFNsUjZSVGgwTjFaNVdHVlJiR1Y1VUZaTFpETjJhR3h2Y0djdGNUSkRhbGNTRjJ4WWIwNWhkbGd4VFUxVGVuRjBjMUJ3VFU5Mk5sRm5HaUpCU2t0TVJtMUtXV1pGU21GaGQzUktSakEwVEdOclYwTmlia281VkhwdWF6Rm4ifQ"
+        "default": "eyJyZHMiOiJQQ18zMjQ1NDc2NDAwODMzNTUxOTQ4fFBST0RfUENfMzI0NTQ3NjQwMDgzMzU1MTk0OCIsInByb2R1Y3RpZCI6IjE2NTYxODg2MzMwNjI5NzA1MjY5IiwiY2F0YWxvZ2lkIjoiMTA5MDU3MjEzODE1NDM1NDgwMCIsImhlYWRsaW5lT2ZmZXJEb2NpZCI6IjEwNTQwMDUxMzg0NjEzOTczOTg1IiwiaW1hZ2VEb2NpZCI6IjE3MjMwMzM3NDkwMTYzODIyNjMiLCJncGNpZCI6IjgyOTk1MTI3NTExOTg2NzE2MjIiLCJtaWQiOiI1NzY0NjI2MTIyODAxMzA0ODEiLCJxIjoiYnV5IGNvZmZlZSIsImhsIjoiZW4iLCJnbCI6InVzIiwiY29va2llcyI6Il9fU2VjdXJlLVNUUlA9QU5tWndhMHZsZUx5TFN3SDZKcmFHRU15RGxnbEhJN3NJelN2NFVJcXhZUDhFQk5kd1FXNTRoRHVsX3RZRl9hSFBsQjM3ajhNMWZRY1NwOVhTMy1icmVOdzIwa1RybjhnajhCaDsgQUVDPUFkSlZFYXR5TE1ZbHktUk5IRGxTVm04MGkySWRhWm4yeE5mWlVBX3JzV3pDX0xyTFFTeUwzTGJ3TkJnOyBOSUQ9NTMyPWtadG5CQnpoNE02cU5lTW9VM1Rjekd1d0VKdmtkcjBZMzFFbmNPTlZUT084TmlVX0oyUTVucmR3Q0dWUU5pWVlvWUROSEdWTE9BdUd0SWI2ZjEwSDk3OHM3bk9hajFFTVN1ellIaDVTMzdDTkJDZkdwLWlmcThVenV4aHR3TTR0YmNidXdnbVBNUHJHeXBlMS1aQmZtTEVCOXpTam9aMFpGOUZHQ3ZQdkc3aGdXZzRCcndvb1RYclhnTHdhc3BtYXpUVi1YYUg1bzJjV2lUNTUwc0dHNG5pRVpYLUI1aFZsbllYQ1QxZU91LXU0Tjk4MXQtUnYzYi1RZS1nTGV2NmV4ZGNFdlE7IERWPU02U2J0ZDljdGtvc1VKSEhKMHhOMXZfa3lxX0M5Tm42MHAxSjhPd3dCd1FBQUFBIiwieHNyZiI6IkFGNXRTTzRGb3VnZDItOVJPN09YU29oMzlvWnhLUzZGNVE6MTc4MzY4OTMxMzM5MiIsIm9hcHZmYyI6IkVvc0RDc3dDUVVwcFZEUjBTMGMwTmxObk16TktTRmxmYW05SlpUbFNNM1ZaVTFJeWJ6ZENlRGgwWm5kRVNGWTFja2hzZFVZNVMzWnVOMVUxYkVSSU1YTlVSMUpyV1VwWFpVWlNUVVY0Y2s5ak1EaElYMWd3UVRaR1RVbzJTVmxpZVdGdU5IRklVV1o0WTJ4d1RVUm1hRFZPT1dSbGFXOVZaVFpNT1ZaT1VXZHJNMlJTTlZNMlQzWlhiSEI1UW01aU5DMHlUR0psYnpWTVJEVkhSazVoYlZkZlVFUmxlbkIwTlc1U2FtRjJOVUprVWkxTloxcFJhbHBsY21kc1VXbDNXVWcxY1dKeFdtTjZWR0ZEVDB0a2RISldTekYwYzB0MVlqaHBiR1o2TFc1cFZsODNjV296VTI5RVgydDVkSE13WlVNNVJVaGhhRTU0WHpKT2ExY3plR3BXY1VGMlJXVjBhVmN5T1ZkNk9WaEVialV5VldVNGNtdHlPVUV4Ym1ZdFNYRjRkM1J3VUMxdFNYUjZORUk0Y3pCV1REUlhkbTVHUldodE1ETnVaaTFNTFZSUlRuUm9PVmRDWDNoaVoyNXVkVWtTRmxsUVFsRmhjV1ZrVFZCWGRIRjBjMUEwV1U5elRWRWFJa0ZFYzNJNVpsRjZSMVpNTkZKR2IwRmhZbmhQWmpSRFRqbHBNRTVCWjAxcFowRSIsInZlcnNpb24iOjJ9"
       },
       "moreStores": {
         "type": "boolean",
@@ -5023,8 +5257,8 @@ export const ENDPOINTS = {
   },
   "google-maps": {
     "slug": "google-maps",
-    "title": "Google Maps API",
-    "description": "The Google Maps API allows users to retreive business data including business type, phone, address, website, ratings, number of reviews, and more.",
+    "title": "Google Maps Search API",
+    "description": "The Google Maps Search API allows users to search for locations using keyword, coordinates, and various filters. The API returns relevant location details and map data.",
     "category": "Google Maps",
     "method": "GET",
     "path": "/scrape/google-maps/search",
@@ -7093,7 +7327,7 @@ export const ENDPOINTS = {
         "description": "Parameter used for sorting and refining results.",
         "wireName": "sortBy",
         "enum": [
-          "qualityScore",
+          "mostRelevant",
           "newestFirst",
           "ratingHigh",
           "ratingLow"
@@ -7114,7 +7348,7 @@ export const ENDPOINTS = {
   "google-news": {
     "slug": "google-news",
     "title": "Google News API",
-    "description": "The Google News API offers real-time access to comprehensive news articles from Google, enabling users to fetch news based on specific queries, locations, publishers, and various filter options for tailored news feeds.",
+    "description": "Real-time access to structured Google News results with a high success rate at scale.",
     "category": "Google SERP",
     "method": "GET",
     "path": "/scrape/google/news",
@@ -7575,10 +7809,502 @@ export const ENDPOINTS = {
       }
     }
   },
+  "google-scholar": {
+    "slug": "google-scholar",
+    "title": "Google Scholar API",
+    "description": "Provides real-time access to Google Scholar search results, including papers, citations, and related scholarly metadata.",
+    "category": "Google Scholar",
+    "method": "GET",
+    "path": "/scrape/google/scholar",
+    "cost": 5,
+    "required": [
+      "q"
+    ],
+    "properties": {
+      "q": {
+        "type": "string",
+        "description": "Search query. Supports Google Scholar search helpers such as `author:` and `source:`.",
+        "wireName": "q",
+        "default": "machine learning"
+      },
+      "hl": {
+        "type": "string",
+        "description": "The two-letter language code for the language you want to use for the search.",
+        "wireName": "hl",
+        "enum": [
+          "af",
+          "ak",
+          "sq",
+          "ws",
+          "am",
+          "ar",
+          "hy",
+          "az",
+          "eu",
+          "be",
+          "bem",
+          "bn",
+          "bh",
+          "xx-bork",
+          "bs",
+          "br",
+          "bg",
+          "bt",
+          "km",
+          "ca",
+          "chr",
+          "ny",
+          "zh-cn",
+          "zh-tw",
+          "zh-hk",
+          "co",
+          "hr",
+          "cs",
+          "da",
+          "nl",
+          "xx-elmer",
+          "en",
+          "eo",
+          "et",
+          "ee",
+          "fo",
+          "tl",
+          "fil",
+          "fi",
+          "fr",
+          "fy",
+          "gaa",
+          "gl",
+          "ka",
+          "de",
+          "el",
+          "kl",
+          "gn",
+          "gu",
+          "xx-hacker",
+          "ht",
+          "ha",
+          "haw",
+          "iw",
+          "he",
+          "hi",
+          "hu",
+          "is",
+          "ig",
+          "id",
+          "ia",
+          "ga",
+          "it",
+          "ja",
+          "jw",
+          "kn",
+          "kk",
+          "rw",
+          "rn",
+          "xx-klingon",
+          "kg",
+          "ko",
+          "kri",
+          "ku",
+          "ckb",
+          "ky",
+          "lo",
+          "la",
+          "lv",
+          "ln",
+          "lt",
+          "loz",
+          "lg",
+          "ach",
+          "mk",
+          "mg",
+          "my",
+          "ml",
+          "mt",
+          "mv",
+          "mi",
+          "mr",
+          "mfe",
+          "mo",
+          "mn",
+          "ms",
+          "sr-me",
+          "ne",
+          "pcm",
+          "nso",
+          "no",
+          "nn",
+          "oc",
+          "or",
+          "om",
+          "ps",
+          "fa",
+          "xx-pirate",
+          "pl",
+          "pt",
+          "pt-br",
+          "pt-pt",
+          "pa",
+          "qu",
+          "ro",
+          "rm",
+          "nyn",
+          "ru",
+          "gd",
+          "sr",
+          "sh",
+          "st",
+          "tn",
+          "crs",
+          "sn",
+          "sd",
+          "si",
+          "sk",
+          "sl",
+          "so",
+          "es",
+          "es-419",
+          "su",
+          "sw",
+          "sv",
+          "tg",
+          "ta",
+          "tt",
+          "te",
+          "th",
+          "ti",
+          "to",
+          "lua",
+          "tum",
+          "tr",
+          "tk",
+          "tw",
+          "ug",
+          "uk",
+          "ur",
+          "uz",
+          "vu",
+          "vi",
+          "cy",
+          "wo",
+          "xh",
+          "yi",
+          "yo",
+          "zu"
+        ]
+      },
+      "lr": {
+        "type": "array",
+        "description": "The 'lr' parameter specifies the language of the websites to return results from. This parameter filters results based on the language of the web content.",
+        "wireName": "lr",
+        "items": {
+          "type": "string",
+          "enum": [
+            "lang_ar",
+            "lang_hy",
+            "lang_bg",
+            "lang_ca",
+            "lang_cs",
+            "lang_da",
+            "lang_de",
+            "lang_el",
+            "lang_en",
+            "lang_es",
+            "lang_et",
+            "lang_tl",
+            "lang_fi",
+            "lang_fr",
+            "lang_hr",
+            "lang_hi",
+            "lang_hu",
+            "lang_id",
+            "lang_is",
+            "lang_it",
+            "lang_iw",
+            "lang_he",
+            "lang_ja",
+            "lang_ko",
+            "lang_lt",
+            "lang_lv",
+            "lang_nl",
+            "lang_no",
+            "lang_fa",
+            "lang_pl",
+            "lang_pt",
+            "lang_ro",
+            "lang_ru",
+            "lang_sk",
+            "lang_sl",
+            "lang_sr",
+            "lang_sv",
+            "lang_th",
+            "lang_tr",
+            "lang_uk",
+            "lang_vi",
+            "lang_zh-CN",
+            "lang_zh-TW"
+          ]
+        }
+      },
+      "start": {
+        "type": "integer",
+        "description": "Result offset for pagination, where 0 is the first result.",
+        "wireName": "start"
+      },
+      "num": {
+        "type": "integer",
+        "description": "Maximum number of results to return per page.",
+        "wireName": "num"
+      },
+      "asYlo": {
+        "type": "integer",
+        "description": "Return results published from this year onward.",
+        "wireName": "asYlo",
+        "default": 2020
+      },
+      "asYhi": {
+        "type": "integer",
+        "description": "Return results published up to and including this year.",
+        "wireName": "asYhi",
+        "default": 2024
+      },
+      "scisbd": {
+        "type": "integer",
+        "description": "Sort results by date instead of relevance: 1 for abstracts only, 2 for everything. Omit for relevance sorting.",
+        "wireName": "scisbd"
+      },
+      "cluster": {
+        "type": "string",
+        "description": "Unique article ID to look up all indexed versions of that article, as returned in a result's `versions.clusterId`.",
+        "wireName": "cluster"
+      },
+      "cites": {
+        "type": "string",
+        "description": "Unique article ID to look up articles that cite it, as returned in a result's `citedBy.citesId`.",
+        "wireName": "cites"
+      },
+      "asSdt": {
+        "type": "string",
+        "description": "Search type/filter, e.g. `0,5` for the default Articles filter, `4` for case law with court codes, or `0`/`7` for patents.",
+        "wireName": "asSdt",
+        "default": "0,5"
+      },
+      "safe": {
+        "type": "string",
+        "description": "Adult content filtering option.",
+        "wireName": "safe",
+        "enum": [
+          "active",
+          "off"
+        ]
+      },
+      "filter": {
+        "type": "number",
+        "description": "Defines whether to enable or disable the filters for 'Similar Results' and 'Omitted Results'. Set to 1 (default) to enable these filters, or 0 to disable them.",
+        "wireName": "filter"
+      },
+      "asVis": {
+        "type": "number",
+        "description": "Set to 1 to exclude citations from the results, or 0 (default) to include them.",
+        "wireName": "asVis"
+      },
+      "asRr": {
+        "type": "number",
+        "description": "Set to 1 to return review articles only, or 0 (default) to return all articles.",
+        "wireName": "asRr"
+      }
+    }
+  },
+  "google-scholar-cite": {
+    "slug": "google-scholar-cite",
+    "title": "Google Scholar Cite API",
+    "description": "Provides real-time access to Google Scholar citation formats and reference-manager export links for a single organic search result.",
+    "category": "Google Scholar",
+    "method": "GET",
+    "path": "/scrape/google/scholar-cite",
+    "cost": 5,
+    "required": [
+      "q"
+    ],
+    "properties": {
+      "q": {
+        "type": "string",
+        "description": "The `resultId` of a Google Scholar organic result, as returned by the google/scholar endpoint.",
+        "wireName": "q",
+        "default": "EQ8shYj8Ai8J"
+      },
+      "hl": {
+        "type": "string",
+        "description": "The two-letter language code for the language you want to use for the search.",
+        "wireName": "hl",
+        "enum": [
+          "af",
+          "ak",
+          "sq",
+          "ws",
+          "am",
+          "ar",
+          "hy",
+          "az",
+          "eu",
+          "be",
+          "bem",
+          "bn",
+          "bh",
+          "xx-bork",
+          "bs",
+          "br",
+          "bg",
+          "bt",
+          "km",
+          "ca",
+          "chr",
+          "ny",
+          "zh-cn",
+          "zh-tw",
+          "zh-hk",
+          "co",
+          "hr",
+          "cs",
+          "da",
+          "nl",
+          "xx-elmer",
+          "en",
+          "eo",
+          "et",
+          "ee",
+          "fo",
+          "tl",
+          "fil",
+          "fi",
+          "fr",
+          "fy",
+          "gaa",
+          "gl",
+          "ka",
+          "de",
+          "el",
+          "kl",
+          "gn",
+          "gu",
+          "xx-hacker",
+          "ht",
+          "ha",
+          "haw",
+          "iw",
+          "he",
+          "hi",
+          "hu",
+          "is",
+          "ig",
+          "id",
+          "ia",
+          "ga",
+          "it",
+          "ja",
+          "jw",
+          "kn",
+          "kk",
+          "rw",
+          "rn",
+          "xx-klingon",
+          "kg",
+          "ko",
+          "kri",
+          "ku",
+          "ckb",
+          "ky",
+          "lo",
+          "la",
+          "lv",
+          "ln",
+          "lt",
+          "loz",
+          "lg",
+          "ach",
+          "mk",
+          "mg",
+          "my",
+          "ml",
+          "mt",
+          "mv",
+          "mi",
+          "mr",
+          "mfe",
+          "mo",
+          "mn",
+          "ms",
+          "sr-me",
+          "ne",
+          "pcm",
+          "nso",
+          "no",
+          "nn",
+          "oc",
+          "or",
+          "om",
+          "ps",
+          "fa",
+          "xx-pirate",
+          "pl",
+          "pt",
+          "pt-br",
+          "pt-pt",
+          "pa",
+          "qu",
+          "ro",
+          "rm",
+          "nyn",
+          "ru",
+          "gd",
+          "sr",
+          "sh",
+          "st",
+          "tn",
+          "crs",
+          "sn",
+          "sd",
+          "si",
+          "sk",
+          "sl",
+          "so",
+          "es",
+          "es-419",
+          "su",
+          "sw",
+          "sv",
+          "tg",
+          "ta",
+          "tt",
+          "te",
+          "th",
+          "ti",
+          "to",
+          "lua",
+          "tum",
+          "tr",
+          "tk",
+          "tw",
+          "ug",
+          "uk",
+          "ur",
+          "uz",
+          "vu",
+          "vi",
+          "cy",
+          "wo",
+          "xh",
+          "yi",
+          "yo",
+          "zu"
+        ]
+      }
+    }
+  },
   "google-serp": {
     "slug": "google-serp",
     "title": "Google SERP API",
-    "description": "The Google SERP API provides real-time access to structured Google search results, offering no blocks or CAPTCHAs.",
+    "description": "The Google SERP API provides real-time access to structured Google search results with a high success rate at scale.",
     "category": "Google SERP",
     "method": "GET",
     "path": "/scrape/google/serp",
@@ -8359,7 +9085,7 @@ export const ENDPOINTS = {
   "google-serp-light": {
     "slug": "google-serp-light",
     "title": "Google SERP Light API",
-    "description": "Google Light SERP API offers real-time access to essential search data, omitting extra-rich results for faster response times and lower costs.",
+    "description": "Google Light SERP API offers real-time access to Google search results parsed from the lightweight layout — organic results, AI Overview, answer box, knowledge graph, related questions and searches, inline images, local pack and search filters — for faster response times and lower costs.",
     "category": "Google SERP",
     "method": "GET",
     "path": "/scrape/google-light/serp",
@@ -9092,7 +9818,7 @@ export const ENDPOINTS = {
   "google-shopping": {
     "slug": "google-shopping",
     "title": "Google Shopping API",
-    "description": "The Google Shopping API gives real-time access to structured product listings from Google Shopping, with no blocks or CAPTCHAs.",
+    "description": "The Google Shopping API gives real-time access to structured product listings from Google Shopping with a high success rate at scale.",
     "category": "Google SERP",
     "method": "GET",
     "path": "/scrape/google/shopping",
@@ -15387,11 +16113,42 @@ export const ENDPOINTS = {
       }
     }
   },
+  "instagram-posts": {
+    "slug": "instagram-posts",
+    "title": "Instagram Posts Scraper API",
+    "description": "The Instagram Posts Scraper API lets you retrieve the latest posts of a public Instagram account using its handle. It returns posts with captions, hashtags, mentions, likes, comments, and plays counts, image and video URLs, and timestamps, with token-based pagination for retrieving older posts.",
+    "category": "Social",
+    "method": "GET",
+    "path": "/scrape/instagram/posts",
+    "cost": 5,
+    "required": [
+      "handle"
+    ],
+    "properties": {
+      "handle": {
+        "type": "string",
+        "description": "The Instagram username of the account whose posts you want to scrape, without the `@` symbol.",
+        "wireName": "handle",
+        "default": "hasdatadotcom"
+      },
+      "limit": {
+        "type": "integer",
+        "description": "The maximum number of posts to retrieve per request. Defaults to 12.",
+        "wireName": "limit",
+        "default": 12
+      },
+      "nextPageToken": {
+        "type": "string",
+        "description": "Defines the next page token. It is used for retrieving the next page results. Use the `nextPageToken` value returned by the previous response.",
+        "wireName": "nextPageToken"
+      }
+    }
+  },
   "instagram-profile": {
     "slug": "instagram-profile",
     "title": "Instagram Profile Scraper API",
     "description": "The Instagram Profile Scraper API lets you retrieve public profile information for a specific Instagram account using its handle. It returns data such as bio, followers, following, posts count, and other visible profile details.",
-    "category": "Instagram",
+    "category": "Social",
     "method": "GET",
     "path": "/scrape/instagram/profile",
     "cost": 5,
@@ -15411,7 +16168,7 @@ export const ENDPOINTS = {
     "slug": "redfin-listing",
     "title": "Redfin Listing Scraper API",
     "description": "The Redfin Listing Scraper API allows you to retrieve real estate listings from Redfin based on various search parameters.",
-    "category": "Redfin",
+    "category": "Real Estate",
     "method": "GET",
     "path": "/scrape/redfin/listing",
     "cost": 5,
@@ -15422,7 +16179,7 @@ export const ENDPOINTS = {
     "properties": {
       "keyword": {
         "type": "string",
-        "description": "The zipcode used to search for listings.",
+        "description": "The location to search for listings. Accepts a zipcode (`33321`), a city (`Austin` or `Austin, TX`), a neighborhood (`East Austin`), a school (`BASIS Austin`), a school district (`Austin Independent School District`), an apartment building by its name (`Maizon Brickell`), or a full street address (`5805 Woodview Ave, Austin, TX 78756`), including a single unit (`221 SW 12th St Unit 1716, Miami, FL`). An address or a building returns a single property card instead of a list of listings, and the `type` parameter does not apply to it.",
         "wireName": "keyword",
         "default": "33321"
       },
@@ -16094,7 +16851,7 @@ export const ENDPOINTS = {
     "slug": "redfin-property",
     "title": "Redfin Property Scraper API",
     "description": "The Redfin Property Scraper API allows users to retrieve detailed information about a specific property using its URL. It provides details such as property features, price, and agent contacts.",
-    "category": "Redfin",
+    "category": "Real Estate",
     "method": "GET",
     "path": "/scrape/redfin/property",
     "cost": 5,
@@ -16114,7 +16871,7 @@ export const ENDPOINTS = {
     "slug": "shopify-collections",
     "title": "Shopify Collections Scraper API",
     "description": "The Shopify Collections Scraper API allows users to retrieve information about collections in a Shopify store, including details such as title, handle, description, and image.",
-    "category": "Shopify",
+    "category": "E-commerce",
     "method": "GET",
     "path": "/scrape/shopify/collections",
     "cost": 5,
@@ -16145,7 +16902,7 @@ export const ENDPOINTS = {
     "slug": "shopify-products",
     "title": "Shopify Products Scraper API",
     "description": "The Shopify Products Scraper API allows users to retrieve product information from a Shopify store using the provided URL, with options to limit the results and filter by collection.",
-    "category": "Shopify",
+    "category": "E-commerce",
     "method": "GET",
     "path": "/scrape/shopify/products",
     "cost": 5,
@@ -16177,10 +16934,343 @@ export const ENDPOINTS = {
       }
     }
   },
+  "tiktok-comments": {
+    "slug": "tiktok-comments",
+    "title": "TikTok Comments Scraper API",
+    "description": "The TikTok Comments Scraper API returns the comments on a public TikTok video, or the replies to a specific comment. Each comment includes its text, like count, timestamp, reply count, and author (with links to the author's profile and posts). Results are paginated with a token.",
+    "category": "Social",
+    "method": "GET",
+    "path": "/scrape/tiktok/comments",
+    "cost": 10,
+    "required": [
+      "videoId"
+    ],
+    "properties": {
+      "videoId": {
+        "type": "string",
+        "description": "The numeric id of the video (the number after `/video/` in a TikTok URL).",
+        "wireName": "videoId",
+        "default": "7667749432279977230"
+      },
+      "commentId": {
+        "type": "string",
+        "description": "When provided, returns the replies to this comment instead of the video's top-level comments.",
+        "wireName": "commentId"
+      },
+      "nextPageToken": {
+        "type": "string",
+        "description": "Defines the next page token. Use the `nextPageToken` value returned by the previous response. Omit it to fetch the first page.",
+        "wireName": "nextPageToken"
+      }
+    }
+  },
+  "tiktok-posts": {
+    "slug": "tiktok-posts",
+    "title": "TikTok Posts Scraper API",
+    "description": "The TikTok Posts Scraper API lets you retrieve the videos of a public TikTok account using its handle. It returns each video with description, hashtags, mentions, like/comment/share/play counts, cover and playable video URLs, music, and timestamp. Results are paginated with a token — pass the `nextPageToken` from a response to fetch the next page.",
+    "category": "Social",
+    "method": "GET",
+    "path": "/scrape/tiktok/posts",
+    "cost": 10,
+    "required": [
+      "handle"
+    ],
+    "properties": {
+      "handle": {
+        "type": "string",
+        "description": "The TikTok username of the account whose videos you want to scrape, with or without the `@` symbol.",
+        "wireName": "handle",
+        "default": "tiktok"
+      },
+      "nextPageToken": {
+        "type": "string",
+        "description": "Defines the next page token. It is used for retrieving the next page of results. Use the `nextPageToken` value returned by the previous response. Omit it to fetch the first page.",
+        "wireName": "nextPageToken"
+      }
+    }
+  },
+  "tiktok-profile": {
+    "slug": "tiktok-profile",
+    "title": "TikTok Profile Scraper API",
+    "description": "The TikTok Profile Scraper API lets you retrieve public profile information for a specific TikTok account using its handle. It returns data such as nickname, bio, followers, likes, videos count, and other visible profile details.",
+    "category": "Social",
+    "method": "GET",
+    "path": "/scrape/tiktok/profile",
+    "cost": 10,
+    "required": [
+      "handle"
+    ],
+    "properties": {
+      "handle": {
+        "type": "string",
+        "description": "The TikTok username of the profile you want to scrape, with or without the `@` symbol.",
+        "wireName": "handle",
+        "default": "nasa"
+      }
+    }
+  },
+  "tiktok-search": {
+    "slug": "tiktok-search",
+    "title": "TikTok Search Scraper API",
+    "description": "The TikTok Search Scraper API lets you search TikTok by keyword for videos or users. Video results include description, hashtags, stats, cover and playable URLs, and author info; user results include nickname, bio, avatar, verified flag, and follower count. Results are paginated with a token.",
+    "category": "Social",
+    "method": "GET",
+    "path": "/scrape/tiktok/search",
+    "cost": 10,
+    "required": [
+      "keyword"
+    ],
+    "properties": {
+      "keyword": {
+        "type": "string",
+        "description": "The phrase to search for on TikTok.",
+        "wireName": "keyword",
+        "default": "dance"
+      },
+      "type": {
+        "type": "string",
+        "description": "What to search for — videos or users. Defaults to video.",
+        "wireName": "type",
+        "enum": [
+          "video",
+          "user"
+        ]
+      },
+      "nextPageToken": {
+        "type": "string",
+        "description": "Defines the next page token. Use the `nextPageToken` value returned by the previous response. Omit it to fetch the first page.",
+        "wireName": "nextPageToken"
+      }
+    }
+  },
+  "walmart-product": {
+    "slug": "walmart-product",
+    "title": "Walmart Product Scraper API",
+    "description": "The Walmart Product Scraper API returns the full detail page of a single Walmart item, and optionally the offers of other sellers competing for the same product.",
+    "category": "E-commerce",
+    "method": "GET",
+    "path": "/scrape/walmart/product",
+    "cost": 10,
+    "required": [],
+    "properties": {
+      "itemId": {
+        "type": "string",
+        "description": "Walmart item id, taken from a product URL or from the id field of the Walmart Search API response. On walmart.com it is numeric (for example 14977205582), on walmart.ca an alphanumeric code (for example 6NZMJ5CW6MH2). Required unless url is provided.",
+        "wireName": "itemId",
+        "default": "14977205582"
+      },
+      "url": {
+        "type": "string",
+        "description": "A full Walmart product URL to scrape as is. When provided, it overrides itemId and the storefront is taken from the URL itself. Required unless itemId is provided.",
+        "wireName": "url",
+        "default": "https://www.walmart.com/ip/Samsung-Galaxy-S25-Ultra-256GB-Unlocked-Android-Cell-Phone-with-200MP-Camera-Titanium-Blue/14977205582"
+      },
+      "domain": {
+        "type": "string",
+        "description": "Walmart storefront the item belongs to. Each storefront has its own catalog, item ids, prices and currency, so an id from one storefront does not resolve on another. Ignored when url is provided. Default is walmart.com.",
+        "wireName": "domain",
+        "enum": [
+          "walmart.com",
+          "walmart.ca"
+        ]
+      },
+      "language": {
+        "type": "string",
+        "description": "Language of the product details. Availability depends on the storefront - walmart.com serves en and es, walmart.ca serves en and fr. A language the storefront does not support falls back to its default.",
+        "wireName": "language",
+        "default": "en",
+        "enum": [
+          "en",
+          "es",
+          "fr"
+        ]
+      },
+      "otherOffers": {
+        "type": "boolean",
+        "description": "Also collect the offers of other sellers competing for this item - each seller name, storefront, price, condition, shipping cost, delivery date and return policy. This takes an extra request to Walmart and costs 5 credits on top of the base 10, whether or not the item turns out to have competing sellers. How many competitors the item advertises, and the cheapest competing price, are returned in the otherOffers block whether the switch is on or off, so it can be left off until the count shows there is something to collect. Default is false.",
+        "wireName": "otherOffers"
+      }
+    }
+  },
+  "walmart-reviews": {
+    "slug": "walmart-reviews",
+    "title": "Walmart Reviews Scraper API",
+    "description": "The Walmart Reviews Scraper API returns the customer reviews of a single Walmart item, ten a page, with the sorting and filtering the product page itself offers.",
+    "category": "E-commerce",
+    "method": "GET",
+    "path": "/scrape/walmart/reviews",
+    "cost": 10,
+    "required": [],
+    "properties": {
+      "itemId": {
+        "type": "string",
+        "description": "Walmart item id, taken from a product URL or from the id field of the Walmart Search API response. On walmart.com it is numeric (for example 14977205582), on walmart.ca an alphanumeric code (for example 6NZMJ5CW6MH2). Required unless url is provided.",
+        "wireName": "itemId",
+        "default": "1028936148"
+      },
+      "url": {
+        "type": "string",
+        "description": "A full Walmart product URL whose reviews to scrape. When provided, it overrides itemId and the storefront is taken from the URL itself. Required unless itemId is provided.",
+        "wireName": "url",
+        "default": "https://www.walmart.com/ip/Restored-Apple-iPhone-14-Carrier-Unlocked-128-GB-Starlight-MPUN3LL-A-Refurbished/1028936148"
+      },
+      "domain": {
+        "type": "string",
+        "description": "Walmart storefront the item belongs to. Each storefront has its own catalog, item ids and review pool, so an id from one storefront does not resolve on another. Ignored when url is provided. Default is walmart.com.",
+        "wireName": "domain",
+        "enum": [
+          "walmart.com",
+          "walmart.ca"
+        ]
+      },
+      "language": {
+        "type": "string",
+        "description": "Language of the review page. Availability depends on the storefront - walmart.com serves en and es, walmart.ca serves en and fr. A language the storefront does not support falls back to its default. Reviews themselves are returned in the language their author wrote them in.",
+        "wireName": "language",
+        "default": "en",
+        "enum": [
+          "en",
+          "es",
+          "fr"
+        ]
+      },
+      "page": {
+        "type": "integer",
+        "description": "Page of reviews to return, ten reviews a page. The response reports the last available page in pagination.totalPages, and the next one in pagination.nextPage. Note that only reviews carrying written text are paginated, so the ceiling follows reviewsInformation.totalReviews rather than the larger totalRatings. Default is 1.",
+        "wireName": "page",
+        "default": 1
+      },
+      "sort": {
+        "type": "string",
+        "description": "Order of the returned reviews, named as the Walmart review page names it. Default is mostRelevant.",
+        "wireName": "sort",
+        "default": "mostRelevant",
+        "enum": [
+          "mostRelevant",
+          "mostRecent",
+          "mostHelpful",
+          "highestRated",
+          "lowestRated",
+          "oldest"
+        ]
+      },
+      "rating": {
+        "type": "integer",
+        "description": "Return only reviews carrying this star rating. The filters block of the response lists the ratings this item actually has, with a review count for each.",
+        "wireName": "rating"
+      },
+      "aspectId": {
+        "type": "string",
+        "description": "Return only reviews mentioning one topic, given as its id. The topics differ per product - a phone has Battery Life or Display, a coffee has Flavor or Aroma - so take the id from the Frequent mentions group of the filters block in the response rather than guessing it.",
+        "wireName": "aspectId"
+      },
+      "condition": {
+        "type": "string",
+        "description": "Return only reviews written about one item condition, given as its code. Applies to items sold in several conditions, such as new and restored. Take the code from the Condition group of the filters block in the response.",
+        "wireName": "condition"
+      },
+      "verifiedPurchasesOnly": {
+        "type": "boolean",
+        "description": "Return only reviews left by customers whose purchase Walmart confirmed. Narrows the pool considerably, since most reviews are unverified or syndicated from the manufacturer.",
+        "wireName": "verifiedPurchasesOnly"
+      }
+    }
+  },
+  "walmart-search": {
+    "slug": "walmart-search",
+    "title": "Walmart Search Scraper API",
+    "description": "The Walmart Search Scraper API allows users to get search results from Walmart based on the specified query, category and storefront. This API enables searching for products on Walmart.",
+    "category": "E-commerce",
+    "method": "GET",
+    "path": "/scrape/walmart/search",
+    "cost": 10,
+    "required": [],
+    "properties": {
+      "q": {
+        "type": "string",
+        "description": "The search term for which to get the search results. It can be omitted only when catId is provided, to browse a whole category instead of searching.",
+        "wireName": "q",
+        "default": "coffee"
+      },
+      "catId": {
+        "type": "string",
+        "description": "Walmart category id, taken from a category URL (for example 976759_1086446_1229651). Combine it with q to search inside a category, or send it alone to browse the whole category. Required unless q is provided.",
+        "wireName": "catId"
+      },
+      "domain": {
+        "type": "string",
+        "description": "Walmart storefront to search. Each storefront has its own catalog, prices and currency. Default is walmart.com.",
+        "wireName": "domain",
+        "enum": [
+          "walmart.com",
+          "walmart.ca"
+        ]
+      },
+      "language": {
+        "type": "string",
+        "description": "Language of the results. Availability depends on the storefront - walmart.com serves en and es, walmart.ca serves en and fr. A language the storefront does not support falls back to its default.",
+        "wireName": "language",
+        "default": "en",
+        "enum": [
+          "en",
+          "es",
+          "fr"
+        ]
+      },
+      "sort": {
+        "type": "string",
+        "description": "The sorting option for the search results.",
+        "wireName": "sort",
+        "default": "bestMatch",
+        "enum": [
+          "bestMatch",
+          "priceLowToHigh",
+          "priceHighToLow",
+          "bestseller",
+          "highlyRated",
+          "newArrivals"
+        ]
+      },
+      "url": {
+        "type": "string",
+        "description": "A full Walmart search or category URL to scrape as is. When provided, it overrides q, catId and the other search parameters, and the storefront is taken from the URL itself.",
+        "wireName": "url"
+      },
+      "page": {
+        "type": "integer",
+        "description": "Page number for pagination (e.g., 1 for the first page, 2 for the second page, etc.). Walmart stops serving results after roughly page 10, returning an empty page beyond that.",
+        "wireName": "page"
+      },
+      "minPrice": {
+        "type": "number",
+        "description": "Lower bound of the price range, in the storefront currency.",
+        "wireName": "minPrice"
+      },
+      "maxPrice": {
+        "type": "number",
+        "description": "Upper bound of the price range, in the storefront currency.",
+        "wireName": "maxPrice"
+      },
+      "deliveryType": {
+        "type": "string",
+        "description": "Keep only the products available with the selected fulfillment method.",
+        "wireName": "deliveryType",
+        "enum": [
+          "shipping",
+          "pickup"
+        ]
+      },
+      "facet": {
+        "type": "string",
+        "description": "Walmart filter in the name:value form, for example brand:Great Value. Every value available for a query is listed in the facets block of the response, each one carrying the exact string to send back here, so a first unfiltered request tells you what can be filtered on. Combine several filters with a double pipe: brand:Great Value||retailer_type:Walmart.",
+        "wireName": "facet"
+      }
+    }
+  },
   "web-scraping": {
     "slug": "web-scraping",
     "title": "Web Scraping API",
-    "description": "If you're tired of fiddling with proxies, headless browsers and captchas, it's time to use Scrape-it.cloud. Send the desired URL and we'll return an HTML response. Work without headaches and worries about blocking.",
+    "description": "Web Scraping API allows you to scrape web pages without the hassle of managing proxies and headless browsers. Simply send the URL and get the HTML response in return.",
     "category": "Web Scraping",
     "method": "POST",
     "path": "/scrape/web",
@@ -16471,6 +17561,124 @@ export const ENDPOINTS = {
           "zh.yelp.com.hk",
           "www.yelp.com.tw"
         ]
+      }
+    }
+  },
+  "yelp-reviews": {
+    "slug": "yelp-reviews",
+    "title": "Yelp Reviews Scraper API",
+    "description": "The Yelp Reviews Scraper API allows users to retrieve the review feed of a specific place on Yelp, with filtering by rating, language and keyword.",
+    "category": "Business",
+    "method": "GET",
+    "path": "/scrape/yelp/reviews",
+    "cost": 10,
+    "required": [
+      "placeId"
+    ],
+    "properties": {
+      "placeId": {
+        "type": "string",
+        "description": "The Yelp ID of the place. For example, '-4ofMtrD7pSpZIX5pnDkig'. Yelp IDs can be obtained from the Yelp Search Scraper API.",
+        "wireName": "placeId",
+        "default": "-4ofMtrD7pSpZIX5pnDkig"
+      },
+      "domain": {
+        "type": "string",
+        "description": "Yelp domain to use. Default is `www.yelp.com`.",
+        "wireName": "domain",
+        "enum": [
+          "www.yelp.com",
+          "www.yelp.co.uk",
+          "www.yelp.ca",
+          "www.yelp.com.au",
+          "ms.yelp.my",
+          "www.yelp.cz",
+          "www.yelp.dk",
+          "www.yelp.de",
+          "www.yelp.at",
+          "de.yelp.ch",
+          "en.yelp.be",
+          "en.yelp.com.hk",
+          "en.yelp.my",
+          "www.yelp.co.nz",
+          "en.yelp.com.ph",
+          "www.yelp.ie",
+          "www.yelp.com.sg",
+          "en.yelp.ch",
+          "www.yelp.com.ar",
+          "www.yelp.cl",
+          "www.yelp.es",
+          "www.yelp.com.mx",
+          "fil.yelp.com.ph",
+          "fr.yelp.be",
+          "fr.yelp.ca",
+          "www.yelp.fr",
+          "fr.yelp.ch",
+          "www.yelp.it",
+          "it.yelp.ch",
+          "nl.yelp.be",
+          "www.yelp.nl",
+          "www.yelp.no",
+          "www.yelp.pl",
+          "www.yelp.com.br",
+          "www.yelp.pt",
+          "fi.yelp.fi",
+          "sv.yelp.fi",
+          "www.yelp.com.tr",
+          "www.yelp.co.jp",
+          "zh.yelp.com.hk",
+          "www.yelp.com.tw"
+        ]
+      },
+      "query": {
+        "type": "string",
+        "description": "Note: Yelp ignores the `rating` filter while searching, so a query returns matching reviews of every star rating. Free-text query to search within the reviews of the place.",
+        "wireName": "query"
+      },
+      "sortBy": {
+        "type": "string",
+        "description": "The order in which the reviews are returned. Defaults to relevanceDesc.",
+        "wireName": "sortBy",
+        "enum": [
+          "relevanceDesc",
+          "dateDesc",
+          "dateAsc",
+          "ratingDesc",
+          "ratingAsc",
+          "elitesDesc"
+        ]
+      },
+      "rating": {
+        "type": "string",
+        "description": "Note: Yelp ignores this filter when `query` is set, so a search returns matching reviews of every star rating. Filters the reviews by star rating. Possible values are 5, 4, 3, 2 and 1. To return only five-star reviews, set it to `5`. To include several ratings, pass them comma-separated, for example `5,4,3`. When omitted, reviews with any rating are returned.",
+        "wireName": "rating",
+        "default": "5,4"
+      },
+      "languageCode": {
+        "type": "string",
+        "description": "Language of the reviews to return, as a two-letter code (e.g., 'en', 'es', 'fr'). Defaults to en.",
+        "wireName": "languageCode",
+        "default": "en"
+      },
+      "notRecommended": {
+        "type": "boolean",
+        "description": "Returns the reviews Yelp does not currently recommend (filtered out of the main feed by its recommendation software) instead of the recommended ones. These reviews carry no photos, videos or reactions, and are paginated ten at a time. Defaults to false.",
+        "wireName": "notRecommended"
+      },
+      "start": {
+        "type": "integer",
+        "description": "Result offset for pagination. It skips the given number of reviews, so the step matches `num` (e.g., 0, 49, 98 for the recommended feed, or 0, 10, 20 when `notRecommended` is set). The response echoes it back as `pagination.start`. Cannot be combined with `nextPageToken`.",
+        "wireName": "start"
+      },
+      "num": {
+        "type": "integer",
+        "description": "Number of reviews to return per page. The maximum is 49. Defaults to 49 for the recommended feed and to 10 when `notRecommended` is set. The response echoes it back as `pagination.num`.",
+        "wireName": "num"
+      },
+      "nextPageToken": {
+        "type": "string",
+        "description": "Opaque cursor for the next page, taken verbatim from `pagination.nextPageToken` of the previous response. It carries both the offset and the page size, so passing it alone continues the feed where the last response ended. Keep the other filters (`sortBy`, `rating`, `languageCode`, `query`, `notRecommended`) identical across pages. Use either this or `start`, not both. Paginate until `pagination.hasNextPage` is false.",
+        "wireName": "nextPageToken"
       }
     }
   },
@@ -18038,7 +19246,7 @@ export const ENDPOINTS = {
     "slug": "zillow-listing",
     "title": "Zillow Listing Scraper API",
     "description": "The Zillow Listing Scraper API lets you retrieve property listings from Zillow.com based on various search parameters.",
-    "category": "Zillow",
+    "category": "Real Estate",
     "method": "GET",
     "path": "/scrape/zillow/listing",
     "cost": 5,
@@ -18300,7 +19508,7 @@ export const ENDPOINTS = {
       },
       "moveInDate": {
         "type": "string",
-        "description": "The desired move-in date.",
+        "description": "The desired move-in date in `YYYY-MM-DD` format.",
         "wireName": "moveInDate"
       },
       "mustHaveGarage": {
@@ -18329,7 +19537,7 @@ export const ENDPOINTS = {
     "slug": "zillow-property",
     "title": "Zillow Property Scraper API",
     "description": "The Zillow Property Scraper API lets you retrieve detailed information about a specific property on Zillow.com using its URL. It provides details such as property features, price, and agent contacts.",
-    "category": "Zillow",
+    "category": "Real Estate",
     "method": "GET",
     "path": "/scrape/zillow/property",
     "cost": 5,
