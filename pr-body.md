@@ -1,11 +1,25 @@
 ## Changes
 
- src/endpoints.generated.ts | 1022 +++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 959 insertions(+), 63 deletions(-)
+ src/endpoints.generated.ts | 4617 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 3120 insertions(+), 1497 deletions(-)
 
 ## Endpoint delta
 
 ### Added
-- google-hotels
-- google-maps-posts
+- chat-gpt-chat
+- duckduckgo
+- facebook-profile
+- google-flights-deals
+- google-scholar
+- google-scholar-cite
+- instagram-comments
+- instagram-posts
+- tiktok-comments
+- tiktok-posts
+- tiktok-profile
+- tiktok-search
+- walmart-product
+- walmart-reviews
+- walmart-search
+- yelp-reviews
 
